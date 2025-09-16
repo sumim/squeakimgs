@@ -1,3 +1,6 @@
+e (the environment) will be bound to the current Messenger object
+result holds the result of a send, usually to be *applied* to next part of message
+
 eval: if null(●MSG)     then 'result <- nil; goto apply;
       if escale●MSG)    then goto escapes;
       if atom(●MSG)     the 'result <- lookupvalue(e, e●MSG); goto apply;
