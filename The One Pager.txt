@@ -16,7 +16,7 @@ apply: 'e <- e●SENDER;
         e●PC <- e●PC + 1
         if e●PC > length(MSG) then goto dispatchrtn;
         if e●MSG●PC = '.     then e●PC <- e●PC + 1; goto evlist;
-        if e●MSG●PC = '»     then if result = 'false’
+        if e●MSG●PC = '»     then if result = 'false
                                        then e●PC <- e●PC + 2; goto evlist;
                                        else e●PC <- e●PC + 1;
                                            'e <- Table(CLASS,  MESSENGER,
