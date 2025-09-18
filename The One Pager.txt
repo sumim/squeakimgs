@@ -1,6 +1,7 @@
 e (the environment) will be bound to the current Messenger object
 result holds the result of a send, usually to be *applied* to next part of message
 
+```
 eval: if null(●MSG)     then 'result <- nil; goto apply;
       if escale●MSG)    then goto escapes;
       if atom(●MSG)     the 'result <- lookupvalue(e, e●MSG); goto apply;
@@ -50,8 +51,9 @@ dispatchrtn: select e●RTN
 
 escapes: select e●MSG●PC+1
                     etc...
+```
 
-
+```
 to ¤ (metacodefor(if e●SNDR●MSG(PC)=e●SNDR●SNDR●MSG(PC)
                           then bump(e●SNDR●SNDR●PC); result <- TRUE
                           else result <- FALSE;
@@ -66,3 +68,4 @@ to ⦂ p v (metacodefor('v <- e●SNDR●SNDR●MSG●PC;
                          goto apply;))
 
 to ^ b (: b. metacodefor('return <- e●b; goto apply))
+```
