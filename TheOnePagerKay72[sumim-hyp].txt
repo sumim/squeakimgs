@@ -5,8 +5,6 @@ and reasoned adjustments (e.g., non-local return for "^"). For the unmodified or
 available at, e.g.: https://raw.githubusercontent.com/worrydream/EarlyHistoryOfSmalltalk/master/SmalltalkHistoryHOPL-scanned-2015-07-16.pdf
 ------------------
 
-
-
 e (the environment) will be bound to the current Messenger object
 result holds the result of a send, usually to be *applied* to next part of message
 
@@ -71,11 +69,10 @@ escapes: select e●MSG●(e●PC + 1)
 
 ```
 to ¤ (metacodefor(
-  if e●SNDR●SNDR●MSG●(e●SNDR●SNDR●PC) = e●SNDR●MSG●(e●SNDR●PC + 1)
-     then e●SNDR●SNDR●'PC ← e●SNDR●SNDR●PC + 1;
-          'result ← TRUE;
-     else 'result ← FALSE;
-  goto apply; ))
+        if e●SNDR●SNDR●MSG●(e●SNDR●SNDR●PC) = e●SNDR●MSG●(e●SNDR●PC + 1)
+                then bump(e●SNDR●SNDR, PC); 'result ← TRUE;
+                else 'result ← FALSE;
+        goto apply; ))
 
 to : p (⦂ p . metacodefor(
                'e ← Table(CLASS,  MESSENGER,
@@ -89,13 +86,12 @@ to : p (⦂ p . metacodefor(
 
 to ⦂ p v (metacodefor(
            e●'v ← e●SNDR●SNDR●MSG●(e●SNDR●SNDR●PC);
-           e●SNDR●SNDR●'PC ← e●SNDR●SNDR●PC + 1;
+           bump(e●SNDR●SNDR, PC);
            if null(e●'p ← e●SNDR●MSG●(e●SNDR●PC))
                then 'result ← e●v;
-               else e●SNDR●'PC ← e●SNDR●PC + 1;
+               else bump(e●SNDR, PC);
                     'result ← e●v; putvalue(e●SNDR, e●p, result);
            goto apply; ))
 
 
 to ^ b (: b. metacodefor('result ← e●b; goto fromRET;))
-```
