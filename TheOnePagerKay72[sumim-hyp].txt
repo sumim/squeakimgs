@@ -87,11 +87,15 @@ to : p (⦂ p . metacodefor(
                            RTN,    FROMEVLB);
                goto eval; ))
 
-to ⦂ p v (metacodefor( 'v ← e●SNDR●SNDR●MSG●(e●SNDR●SNDR●PC);
-                        if null(e●'p ← e●SNDR●MSG●(e●SNDR●PC))
-                           then 'result ← v;
-                           else e●'p ← 'result ← v;
-                        goto apply; ))
+to ⦂ p v (metacodefor(
+           e●'v ← e●SNDR●SNDR●MSG●(e●SNDR●SNDR●PC);
+           e●SNDR●SNDR●'PC ← e●SNDR●SNDR●PC + 1;
+           if null(e●'p ← e●SNDR●MSG●(e●SNDR●PC))
+               then 'result ← e●v;
+               else e●SNDR●'PC ← e●SNDR●PC + 1;
+                    'result ← e●v; putvalue(e●SNDR, e●p, result);
+           goto apply; ))
+
 
 to ^ b (: b. metacodefor('result ← e●b; goto fromRET;))
 ```
