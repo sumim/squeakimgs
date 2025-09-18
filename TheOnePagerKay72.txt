@@ -1,0 +1,71 @@
+e (the environment) will be bound to the current Messenger object
+result holds the result of a send, usually to be *applied* to next part of message
+
+```
+eval: if null(●MSG)     then 'result <- nil; goto apply;
+      if escale●MSG)    then goto escapes;
+      if atom(●MSG)     the 'result <- lookupvalue(e, e●MSG); goto apply;
+      if notlist(e●MSG) the 'result <- e●MSG; goto apply;
+
+evlist: 'e <- Table(CLASS,  MESSENGER,
+                    SENDER, e,
+                    GLOBAL, e●GLOBAL,
+                    SELF,   e●SELF,
+                    PC,     1,
+                    MSG,    e●MSG●PC)
+                    RTN,    APPLY);
+              goto eval;
+
+apply: 'e <- e●SENDER;
+        e●PC <- e●PC + 1
+        if e●PC > length(MSG) then goto dispatchrtn;
+        if e●MSG●PC = '.     then e●PC <- e●PC + 1; goto evlist;
+        if e●MSG●PC = '»     then if result = 'false
+                                       then e●PC <- e●PC + 2; goto evlist;
+                                       else e●PC <- e●PC + 1;
+                                           'e <- Table(CLASS,  MESSENGER,
+                                                       SENDER, e,
+                                                       GLOBAL, GLOBAL,
+                                                       SELF,  result,
+                                                       PC,    t,
+                                                       MSG,   e●MSG●PC,
+                                                       RTN,   FROMTTRUE);
+                                           goto eval;
+
+'e <- Table(CLASS,  MESSENGER,
+　          SENDER, e,
+　          GLOBAL, GLOBAL,
+　          SELF,   result,
+　          PC,     1,
+　          MSG,    result●CLASS●CODE,
+　          RTN,    APPLY);
+
+fromTRUE: 'e <- e●SENDER●SENDER; goto dispatchrtn;
+
+fromEYE: putvalue(E●GLOBAL, e●p, result); goto apply;
+
+dispatchrtn: select e●RTN
+                    case APPLY: goto apply;
+                    case FROMTRUE: goto fromTRUE;
+                    case FROMEYE: goto fromEYE;
+
+escapes: select e●MSG●PC+1
+                    etc...
+```
+
+```
+to ¤ (metacodefor(if e●SNDR●MSG(PC)=e●SNDR●SNDR●MSG(PC)
+                          then bump(e●SNDR●SNDR●PC); result <- TRUE
+                          else result <- FALSE;
+                          goto apply))
+
+to : p (⦂ p. metacodefor(set up a new context and eval sender))
+
+to ⦂ p v (metacodefor('v <- e●SNDR●SNDR●MSG●PC;
+                         if nil(e●'p <- e●SNDR●MSG●PC)
+                              then result <- v
+                               else ep <- result <- v;
+                         goto apply;))
+
+to ^ b (: b. metacodefor('return <- e●b; goto apply))
+```
