@@ -1,0 +1,97 @@
+--- DISCLAIMER ---
+Unofficial, lightly emended reconstruction of the 1972 "The One Pager" by sumim -- includes typo fixes, control-flow repairs, 
+and reasoned adjustments (e.g., non-local return for "^"). For the unmodified original, see TheOnePagerKay72.txt or 
+"The Early History of Smalltalk" (Kay, 1993), Appendix II, Figure 11A.3 ("The One Pager"), 
+available at, e.g.: https://raw.githubusercontent.com/worrydream/EarlyHistoryOfSmalltalk/master/SmalltalkHistoryHOPL-scanned-2015-07-16.pdf
+------------------
+
+
+
+e (the environment) will be bound to the current Messenger object
+result holds the result of a send, usually to be *applied* to next part of message
+
+```
+eval: if null(e●MSG●(e●PC))    then if e●MSG = e●SELF●CLASS●CODE then e●'RTN ← FROMTHRU;
+                                       'result ← NIL; goto apply;
+      if escape(e●MSG●(e●PC))  then goto escapes;
+      if atom(e●MSG●(e●PC))    then 'result ← lookupvalue(e, e●MSG●(e●PC)); goto apply;
+      if notlist(e●MSG●(e●PC)) then 'result ← e●MSG●(e●PC); goto apply;
+
+evlist: 'e ← Table(CLASS,  MESSENGER,
+                    SNDR,   e,
+                    GLOBAL, e●GLOBAL,
+                    SELF,   e●SELF,
+                    PC,     1,
+                    MSG,    e●MSG●(e●PC),
+                    RTN,    APPLY);
+        goto eval;
+
+apply: e●'PC ← e●PC + 1;
+       if e●PC > length(e●MSG) then goto dispatchrtn;
+       if e●MSG●(e●PC) = '.  then e●'PC ← e●PC + 1; goto eval;
+       if e●MSG●(e●PC) = '»  then if result = FALSE
+                                      then e●'PC ← e●PC + 2; goto eval;
+                                      else e●'PC ← e●PC + 1;
+                                           'e ← Table(CLASS,  MESSENGER,
+                                                       SNDR,   e,
+                                                       GLOBAL, e●GLOBAL,
+                                                       SELF,   e●SELF,
+                                                       PC,     1,
+                                                       MSG,    e●MSG●(e●PC),
+                                                       RTN,    FROMTRUE);
+                                           goto eval;
+
+'e ← Table(CLASS,  MESSENGER,
+            SNDR,   e,
+            GLOBAL, e●GLOBAL,
+            SELF,   result,
+            PC,     1,
+            MSG,    result●CLASS●CODE,
+            RTN,    APPLY);
+goto eval;
+
+fromTRUE: 'e ← e●SNDR●SNDR; goto apply;
+
+fromEVLB: e●SNDR●SNDR●SNDR●'PC ← e●PC - 1;
+          putvalue(e●SNDR, e●p, result);
+          'e ← e●SNDR; goto apply;
+
+fromRET: if e●MSG = e●SELF●CLASS●CODE then 'e ← e●SNDR; goto apply;
+         'e ← e●SNDR; goto fromRET;
+
+dispatchrtn: select e●RTN
+                    case APPLY:    'e ← e●SNDR; goto apply;
+                    case FROMTRUE: goto fromTRUE;
+                    case FROMEVLB: goto fromEVLB;
+                    case FROMTHRU: 'e ← e●SNDR; goto eval;
+
+escapes: select e●MSG●(e●PC + 1)
+                 etc...
+```
+
+```
+to ¤ (metacodefor(
+  if e●SNDR●SNDR●MSG●(e●SNDR●SNDR●PC) = e●SNDR●MSG●(e●SNDR●PC + 1)
+     then e●SNDR●SNDR●'PC ← e●SNDR●SNDR●PC + 1;
+          'result ← TRUE;
+     else 'result ← FALSE;
+  goto apply; ))
+
+to : p (⦂ p . metacodefor(
+               'e ← Table(CLASS,  MESSENGER,
+                           SNDR,   e,
+                           GLOBAL, e●GLOBAL,
+                           SELF,   e●SNDR●SNDR●SELF,
+                           PC,     e●SNDR●SNDR●PC,
+                           MSG,    e●SNDR●SNDR●MSG,
+                           RTN,    FROMEVLB);
+               goto eval; ))
+
+to ⦂ p v (metacodefor( 'v ← e●SNDR●SNDR●MSG●(e●SNDR●SNDR●PC);
+                        if null(e●'p ← e●SNDR●MSG●(e●SNDR●PC))
+                           then 'result ← v;
+                           else e●'p ← 'result ← v;
+                        goto apply; ))
+
+to ^ b (: b. metacodefor('result ← e●b; goto fromRET;))
+```
