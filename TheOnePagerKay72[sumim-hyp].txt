@@ -1,8 +1,9 @@
 --- DISCLAIMER ---
-Unofficial, lightly emended reconstruction of the 1972 "The One Pager" by sumim -- includes typo fixes, control-flow repairs, 
-and reasoned adjustments (e.g., non-local return for "^"). For the unmodified original, see TheOnePagerKay72.txt or 
-"The Early History of Smalltalk" (Kay, 1993), Appendix II, Figure 11A.3 ("The One Pager"), 
-available at, e.g.: https://raw.githubusercontent.com/worrydream/EarlyHistoryOfSmalltalk/master/SmalltalkHistoryHOPL-scanned-2015-07-16.pdf
+Unofficial, lightly amended reconstruction of Alan Kay's 1972 "The One Pager" by sumim -- includes 
+typo fixes, control-flow repairs, and reasoned adjustments (e.g., non-local return for "^").
+For the unmodified original, see TheOnePagerKay72.txt or "The Early History of Smalltalk" (Kay, 1993),
+Appendix II, Figure 11A.3 ("The One Pager"), available at, e.g.:
+https://tinlizzie.org/VPRIPapers/hc_smalltalk_history.pdf
 ------------------
 
 e (the environment) will be bound to the current Messenger object
