@@ -96,3 +96,5 @@ to ⦂ p v (metacodefor(
 
 
 to ^ b (: b. metacodefor('result ← e●b; goto fromRET;))
+```
+
