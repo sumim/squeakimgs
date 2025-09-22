@@ -18,6 +18,7 @@ eval: if null(e●MSG●(e●PC))    then if e●MSG = e●SELF●CLASS●CODE t
 
 evlist: 'e ← Table(CLASS,  MESSENGER,
                     SNDR,   e,
+                    MSGR,   e●MSGR,
                     GLOBAL, e●GLOBAL,
                     SELF,   e●SELF,
                     PC,     1,
@@ -33,6 +34,7 @@ apply: e●'PC ← e●PC + 1;
                                       else e●'PC ← e●PC + 1;
                                            'e ← Table(CLASS,  MESSENGER,
                                                        SNDR,   e,
+                                                       MSGR,   e●MSGR,
                                                        GLOBAL, e●GLOBAL,
                                                        SELF,   e●SELF,
                                                        PC,     1,
@@ -42,6 +44,7 @@ apply: e●'PC ← e●PC + 1;
 
 'e ← Table(CLASS,  MESSENGER,
             SNDR,   e,
+            MSGR,   e,
             GLOBAL, e●GLOBAL,
             SELF,   result,
             PC,     1,
@@ -51,7 +54,7 @@ goto eval;
 
 fromTRUE: 'e ← e●SNDR●SNDR; goto apply;
 
-fromEVLB: e●SNDR●SNDR●SNDR●'PC ← e●PC - 1;
+fromEVLB: e●MSGR●'PC ← e●PC - 1;
           putvalue(e●SNDR, e●p, result);
           'e ← e●SNDR; goto apply;
 
@@ -70,24 +73,25 @@ escapes: select e●MSG●(e●PC + 1)
 
 ```
 to ¤ (metacodefor(
-        if e●SNDR●SNDR●MSG●(e●SNDR●SNDR●PC) = e●SNDR●MSG●(e●SNDR●PC + 1)
-                then bump(e●SNDR●SNDR, PC); 'result ← TRUE;
+        if e●MSGR●MSG●(e●MSGR●PC) = e●SNDR●MSG●(e●SNDR●PC + 1)
+                then bump(e●MSGR, PC); 'result ← TRUE;
                 else 'result ← FALSE;
         goto apply; ))
 
 to : p (⦂ p . metacodefor(
                'e ← Table(CLASS,  MESSENGER,
                            SNDR,   e,
+                           MSGR,   e●MSGR,
                            GLOBAL, e●GLOBAL,
-                           SELF,   e●SNDR●SNDR●SELF,
-                           PC,     e●SNDR●SNDR●PC,
-                           MSG,    e●SNDR●SNDR●MSG,
+                           SELF,   e●MSGR●SELF,
+                           PC,     e●MSGR●PC,
+                           MSG,    e●MSGR●MSG,
                            RTN,    FROMEVLB);
                goto eval; ))
 
 to ⦂ p v (metacodefor(
-           e●'v ← e●SNDR●SNDR●MSG●(e●SNDR●SNDR●PC);
-           bump(e●SNDR●SNDR, PC);
+           e●'v ← e●MSGR●MSG●(e●MSGR●PC);
+           bump(e●MSGR, PC);
            if null(e●'p ← e●SNDR●MSG●(e●SNDR●PC))
                then 'result ← e●v;
                else bump(e●SNDR, PC);
@@ -97,4 +101,3 @@ to ⦂ p v (metacodefor(
 
 to ^ b (: b. metacodefor('result ← e●b; goto fromRET;))
 ```
-
