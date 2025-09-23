@@ -10,8 +10,7 @@ e (the environment) will be bound to the current Messenger object
 result holds the result of a send, usually to be *applied* to next part of message
 
 ```
-eval: if null(e●MSG●(e●PC))    then if e●MSG = e●SELF●CLASS●CODE then e●'RTN ← FROMTHRU;
-                                       'result ← NIL; goto apply;
+eval: if null(e●MSG●(e●PC))    then goto handlnil;
       if escape(e●MSG●(e●PC))  then goto escapes;
       if atom(e●MSG●(e●PC))    then 'result ← lookupvalue(e, e●MSG●(e●PC)); goto apply;
       if notlist(e●MSG●(e●PC)) then 'result ← e●MSG●(e●PC); goto apply;
@@ -28,7 +27,8 @@ evlist: 'e ← Table(CLASS,  MESSENGER,
 
 apply: e●'PC ← e●PC + 1;
        if e●PC > length(e●MSG) then goto dispatchrtn;
-       if e●MSG●(e●PC) = '.  then e●'PC ← e●PC + 1; goto eval;
+       if null(e●MSG●(e●PC)) then goto handlnil;
+       if e●MSG●(e●PC) = '.  then e●'PC ← e●PC + 1; 'result ← NIL; goto eval;
        if e●MSG●(e●PC) = '»  then if result = FALSE
                                       then e●'PC ← e●PC + 2; goto eval;
                                       else e●'PC ← e●PC + 1;
@@ -44,7 +44,7 @@ apply: e●'PC ← e●PC + 1;
 
 'e ← Table(CLASS,  MESSENGER,
             SNDR,   e,
-            MSGR,   e,
+            MSGR,   e●SNDR,
             GLOBAL, e●GLOBAL,
             SELF,   result,
             PC,     1,
@@ -58,22 +58,29 @@ fromEVLB: e●MSGR●'PC ← e●PC - 1;
           putvalue(e●SNDR, e●p, result);
           'e ← e●SNDR; goto apply;
 
-fromRET: if e●MSG = e●SELF●CLASS●CODE then 'e ← e●SNDR; goto apply;
-         'e ← e●SNDR; goto fromRET;
+fromTHRU: 'e ← e●SNDR;
+           if e●'RTN = FROMEVLB then goto dispatchrtn; else goto eval;
+
+handlrtn: if e●MSG = e●SELF●CLASS●CODE then 'e ← e●SNDR; goto apply;
+          'e ← e●SNDR; goto handlrtn;
+
+handlnil: if e●MSG = e●SELF●CLASS●CODE then e●'RTN ← FROMTHRU;
+          if goto apply;
 
 dispatchrtn: select e●RTN
                     case APPLY:    'e ← e●SNDR; goto apply;
                     case FROMTRUE: goto fromTRUE;
                     case FROMEVLB: goto fromEVLB;
-                    case FROMTHRU: 'e ← e●SNDR; goto eval;
+                    case FROMTHRU: goto fromTHRU;
 
-escapes: select e●MSG●(e●PC + 1)
+escapes: e●'PC ← e●PC + 1;
+         select e●MSG●(e●PC)
                  etc...
 ```
 
 ```
 to ¤ (metacodefor(
-        if e●MSGR●MSG●(e●MSGR●PC) = e●SNDR●MSG●(e●SNDR●PC + 1)
+        if e●MSGR●MSG●(e●MSGR●PC) = e●SNDR●MSG●(e●SNDR●PC)
                 then bump(e●MSGR, PC); 'result ← TRUE;
                 else 'result ← FALSE;
         goto apply; ))
@@ -99,5 +106,5 @@ to ⦂ p v (metacodefor(
            goto apply; ))
 
 
-to ^ b (: b. metacodefor('result ← e●b; goto fromRET;))
+to ^ b (: b. metacodefor('result ← e●b; goto handlrtn;))
 ```
