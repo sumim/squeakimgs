@@ -17,7 +17,7 @@ eval: if null(e●MSG●(e●PC))    then goto handlnil;
 
 evlist: 'e ← Table(CLASS,  MESSENGER,
                     SNDR,   e,
-                    MSGR,   e●MSGR,
+                    HOME,   e●HOME,
                     GLOBAL, e●GLOBAL,
                     SELF,   e●SELF,
                     PC,     1,
@@ -25,16 +25,16 @@ evlist: 'e ← Table(CLASS,  MESSENGER,
                     RTN,    APPLY);
         goto eval;
 
-apply: e●'PC ← e●PC + 1;
+apply: if null(e●MSG●(e●PC)) then goto handlnil;
+       e●'PC ← e●PC + 1;
        if e●PC > length(e●MSG) then goto dispatchrtn;
-       if null(e●MSG●(e●PC)) then goto handlnil;
        if e●MSG●(e●PC) = '.  then e●'PC ← e●PC + 1; 'result ← NIL; goto eval;
        if e●MSG●(e●PC) = '»  then if result = FALSE
                                       then e●'PC ← e●PC + 2; goto eval;
                                       else e●'PC ← e●PC + 1;
                                            'e ← Table(CLASS,  MESSENGER,
                                                        SNDR,   e,
-                                                       MSGR,   e●MSGR,
+                                                       HOME,   e●HOME,
                                                        GLOBAL, e●GLOBAL,
                                                        SELF,   e●SELF,
                                                        PC,     1,
@@ -42,30 +42,31 @@ apply: e●'PC ← e●PC + 1;
                                                        RTN,    FROMTRUE);
                                            goto eval;
 
-'e ← Table(CLASS,  MESSENGER,
-            SNDR,   e,
-            MSGR,   e●SNDR,
-            GLOBAL, e●GLOBAL,
-            SELF,   result,
-            PC,     1,
-            MSG,    result●CLASS●CODE,
-            RTN,    APPLY);
-goto eval;
+       'e ← Table(CLASS,  MESSENGER,
+                   SNDR,   e,
+                   HOME,   NIL,
+                   GLOBAL, e●GLOBAL,
+                   SELF,   result,
+                   PC,     1,
+                   MSG,    result●CLASS●CODE,
+                   RTN,    APPLY);
+       e●'HOME ← e;
+       goto eval;
 
 fromTRUE: 'e ← e●SNDR●SNDR; goto apply;
 
-fromEVLB: e●MSGR●'PC ← e●PC - 1;
-          putvalue(e●SNDR, e●p, result);
-          'e ← e●SNDR; goto apply;
+fromEVLB: e●SNDR●SNDR●HOME●HOME●SNDR●'PC ← e●PC;
+          putvalue(e●SNDR●SNDR, e●SNDR●p, result);
+          'e ← e●SNDR●SNDR; goto apply;
 
 fromTHRU: 'e ← e●SNDR;
-           if e●'RTN = FROMEVLB then goto dispatchrtn; else goto eval;
+          if e●'RTN = FROMEVLB 
+　　　　　　　then e●'PC ← e●PC - 1;
+　　　　　　　　　　goto dispatchrtn; 
+　　　　　　　else goto eval;
 
-handlrtn: if e●MSG = e●SELF●CLASS●CODE then 'e ← e●SNDR; goto apply;
-          'e ← e●SNDR; goto handlrtn;
-
-handlnil: if e●MSG = e●SELF●CLASS●CODE then e●'RTN ← FROMTHRU;
-          if goto apply;
+handlnil: if e = e●HOME then 'result ← e●SELF; e●'RTN ← FROMTHRU;
+          goto dispatchrtn;
 
 dispatchrtn: select e●RTN
                     case APPLY:    'e ← e●SNDR; goto apply;
@@ -80,31 +81,30 @@ escapes: e●'PC ← e●PC + 1;
 
 ```
 to ¤ (metacodefor(
-        if e●MSGR●MSG●(e●MSGR●PC) = e●SNDR●MSG●(e●SNDR●PC)
-                then bump(e●MSGR, PC); 'result ← TRUE;
+        if e●SNDR●HOME●SNDR●MSG●(e●SNDR●HOME●SNDR●PC) = e●SNDR●MSG●(e●SNDR●PC)
+                then bump(e●SNDR●HOME●SNDR, PC); 'result ← TRUE;
                 else 'result ← FALSE;
-        goto apply; ))
+        'e ← e●SNDR; goto apply; ))
 
 to : p (⦂ p . metacodefor(
                'e ← Table(CLASS,  MESSENGER,
                            SNDR,   e,
-                           MSGR,   e●MSGR,
-                           GLOBAL, e●GLOBAL,
-                           SELF,   e●MSGR●SELF,
-                           PC,     e●MSGR●PC,
-                           MSG,    e●MSGR●MSG,
+                           HOME,   e●SNDR●HOME●HOME●SNDR●HOME,
+                           GLOBAL, e●SNDR●HOME●HOME●SNDR●GLOBAL,
+                           SELF,   e●SNDR●HOME●HOME●SNDR●SELF,
+                           PC,     e●SNDR●HOME●HOME●SNDR●PC,
+                           MSG,    e●SNDR●HOME●HOME●SNDR●MSG,
                            RTN,    FROMEVLB);
                goto eval; ))
 
 to ⦂ p v (metacodefor(
-           e●'v ← e●MSGR●MSG●(e●MSGR●PC);
-           bump(e●MSGR, PC);
+           e●'v ← e●SNDR●HOME●SNDR●MSG●(e●SNDR●HOME●SNDR●PC);
+           bump(e●SNDR●HOME●SNDR, PC);
            if null(e●'p ← e●SNDR●MSG●(e●SNDR●PC))
                then 'result ← e●v;
-               else bump(e●SNDR, PC);
-                    'result ← e●v; putvalue(e●SNDR, e●p, result);
-           goto apply; ))
+               else 'result ← e●v; putvalue(e●SNDR, e●p, result);
+           'e ← e●SNDR; goto apply; ))
 
 
-to ^ b (: b. metacodefor('result ← e●b; goto handlrtn;))
+to ^ b (: b. metacodefor('result ← e●b; 'e ← e●HOME●SNDR; goto apply;))
 ```
