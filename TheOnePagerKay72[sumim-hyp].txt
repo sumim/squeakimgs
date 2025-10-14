@@ -55,7 +55,7 @@ apply: if null(e●MSG●(e●PC)) then goto handlnil;
 
 fromTRUE: 'e ← e●SNDR●SNDR; goto apply;
 
-fromEVLB: e●SNDR●SNDR●HOME●HOME●SNDR●'PC ← e●PC;
+fromEVLB: e●SNDR●SNDR●HOME●SNDR●'PC ← e●PC;
           putvalue(e●SNDR●SNDR, e●SNDR●p, result);
           'e ← e●SNDR●SNDR; goto apply;
 
@@ -89,11 +89,11 @@ to ¤ (metacodefor(
 to : p (⦂ p . metacodefor(
                'e ← Table(CLASS,  MESSENGER,
                            SNDR,   e,
-                           HOME,   e●SNDR●HOME●HOME●SNDR●HOME,
-                           GLOBAL, e●SNDR●HOME●HOME●SNDR●GLOBAL,
-                           SELF,   e●SNDR●HOME●HOME●SNDR●SELF,
-                           PC,     e●SNDR●HOME●HOME●SNDR●PC,
-                           MSG,    e●SNDR●HOME●HOME●SNDR●MSG,
+                           HOME,   e●SNDR●HOME●SNDR●HOME,
+                           GLOBAL, e●SNDR●HOME●SNDR●GLOBAL,
+                           SELF,   e●SNDR●HOME●SNDR●SELF,
+                           PC,     e●SNDR●HOME●SNDR●PC,
+                           MSG,    e●SNDR●HOME●SNDR●MSG,
                            RTN,    FROMEVLB);
                goto eval; ))
 
