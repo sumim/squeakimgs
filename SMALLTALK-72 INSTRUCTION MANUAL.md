@@ -856,7 +856,7 @@ to indicate the literal word rather than the city.
 | ≠ | ＜ctrl＞ = | not equal | (Snippets transfer only ※) |
 | % | ＜ctrl＞ v | percent sign | (Snippets transfer only ※) |
 | @ | ＜ctrl＞ 2 | "at" sign | (Snippets transfer only ※) |
-|！ | ＜ctrl＞ 1 | explanation | (Snippets transfer only ※) |
+|！ | ＜ctrl＞ 1 | exclamation | (Snippets transfer only ※) |
 | " | ＜ctrl＞ 0 | double quote sign | (Snippets transfer only ※) |
 | $ | ＜ctrl＞ 4 | dollar sign | (Snippets transfer only ※) |
 
@@ -6878,3 +6878,4 @@ The index distinguishes between pages where the items are defined (def) and thos
 |**xydic** |example |def 94
 |**xyfns** |example |def 92
 |**Zahn's Device** |example |def 99
+
