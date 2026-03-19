@@ -57,7 +57,7 @@ fromTRUE: 'e ← e●SNDR●SNDR; goto apply;
 
 fromEVLB: e●SNDR●SNDR●HOME●SNDR●'PC ← e●PC;
           putvalue(e●SNDR●SNDR, e●SNDR●p, result);
-          'e ← e●SNDR●SNDR; goto apply;
+          'e ← e●SNDR●SNDR; e●'PC ← e●PC - 1; goto apply;
 
 fromTHRU: 'e ← e●SNDR;
           if e●'RTN = FROMEVLB 
