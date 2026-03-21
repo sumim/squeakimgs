@@ -73,6 +73,7 @@ dispatchrtn: select e●RTN
                     case APPLY:    'e ← e●SNDR; goto apply;
                     case FROMTRUE: goto fromTRUE;
                     case FROMEVLB: goto fromEVLB;
+                    case FROMSENDBACK: goto fromSENDBACK;
                     case FROMTHRU: goto fromTHRU;
 
 escapes: e●'PC ← e●PC + 1;
@@ -107,9 +108,14 @@ to ⦂ p v (metacodefor(
            'e ← e●SNDR; goto apply; ))
 
 
-to ^ b (: b. metacodefor(
-              'result ← e●b;
-              'e ← e●HOME●SNDR●HOME●SNDR;
-              e●'PC ← e●PC - 1;
-              goto apply; ))
+to ^ b (metacodefor(
+         'e ← Table(CLASS,  MESSENGER,
+                     SNDR,   e●HOME●SNDR,
+                     HOME,   e●HOME●SNDR●HOME,
+                     GLOBAL, e●HOME,
+                     SELF,   e●HOME●SNDR●SELF,
+                     PC,     1,
+                     MSG,    remainder(e●HOME),
+                     RTN,    FROMSENDBACK);
+         goto eval; ))
 ```
