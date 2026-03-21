@@ -53,16 +53,17 @@ apply: if null(e●MSG●(e●PC)) then goto handlnil;
        e●'HOME ← e;
        goto eval;
 
-fromTRUE: 'e ← e●SNDR●SNDR; goto apply;
+fromTRUE: 'e ← e●SNDR●SNDR;
+          e●'PC ← e●PC - 1;
+          goto apply;
 
 fromEVLB: e●SNDR●SNDR●HOME●SNDR●'PC ← e●PC;
           putvalue(e●SNDR●SNDR, e●SNDR●p, result);
-          'e ← e●SNDR●SNDR; goto apply;
+          'e ← e●SNDR●SNDR; goto eval;
 
 fromTHRU: 'e ← e●SNDR;
           if e●'RTN = FROMEVLB 
-　　　　　　　then e●'PC ← e●PC - 1;
-　　　　　　　　　　goto dispatchrtn; 
+　　　　　　　then goto dispatchrtn; 
 　　　　　　　else goto eval;
 
 handlnil: if e = e●HOME then 'result ← e●SELF; e●'RTN ← FROMTHRU;
@@ -106,5 +107,9 @@ to ⦂ p v (metacodefor(
            'e ← e●SNDR; goto apply; ))
 
 
-to ^ b (: b. metacodefor('result ← e●b; 'e ← e●HOME●SNDR; goto apply;))
+to ^ b (: b. metacodefor(
+              'result ← e●b;
+              'e ← e●HOME●SNDR●HOME●SNDR;
+              e●'PC ← e●PC - 1;
+              goto apply; ))
 ```
