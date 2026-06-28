@@ -131,8 +131,8 @@ To update your files, either use a Basic Smalltalk disk for transferring files, 
 
 If you execute it as a command file, your disk will be updated with the Basic Smalltalk disk files listed above.
 
-[Page 1]
-## Chapter I. INFORMAL ORIENTATION AND OVERVIEW OF THE SMALLTALK SYSTEM
+==Page 1==
+## Chapter I. INFORMAL ORIENTATION TO THE SMALLTALK SYSTEM
 
 ### Introduction
 
@@ -164,7 +164,7 @@ If you are on a color machine (your screen background has color rather than whit
 @cs@ <return>
 ```
 
-[Page 2]
+==Page 2==
 ### The Mouse
 
 The little rectangular object with three buttons that usually sits to the right of the keyboard is called a mouse. Move it around while watching the screen. An arrow (mouse cursor) will be moving in response to it. This is how we point to objects on the screen. Smalltalk constantly "asks" the mouse where it is. A little bit further on we will explain how you can ask the mouse the same questions.
@@ -184,6 +184,10 @@ A small, flashing image of the Interim Dynabook will appear--this means Smalltal
 ```
 
 The ！ (do it) character is marked 'LF' on the upper right of your keyboard. It is used to tell Smalltalk that this is the message you really want it to do. (for LivelyWeb version, push '\' key) Now try the following:
+
+```
+3*4！
+```
 
 '*' is how we express the sign for multiplication in Smalltalk. Try:
 
@@ -355,7 +359,7 @@ d. **Create.** A new dialog window will be created for you by grabbing the lower
 
 e. Position the cursor inside the new window and try typing `3+4！`.
 
-f. ***Delete.** Any dialog window can be deleted by grabbing its top right corner. Try it with the new dialog window. For obvious reasons, a single remaining dialog window can not be deleted.
+f. **Delete.** Any dialog window can be deleted by grabbing its top right corner. Try it with the new dialog window. For obvious reasons, a single remaining dialog window can not be deleted.
 
 ```
 --------------------------
@@ -378,7 +382,7 @@ Every object belongs to a class (a method for grouping together objects that do 
 
 We have just been looking at members of the class *window*. Messages are sent to a *window* by pointing with the mouse cursor and pressing a mouse button. Each member of the class responds to the message by moving to a new screen location, changing its size, creating a new member of the class, or deleting (erasing itself from the screen). The objects are dialog windows, capable of capturing and editing Smalltalk messages. The next example is a *font* window which contains an editor for designing display characters. (The *window* class is not for LivelyWeb version)
 
-[Page 7]
+==Page 7==
 ### Font Editing Windows (Not for LivelyWeb version)
 
 Type:
@@ -418,7 +422,7 @@ Four actions are taken by pointing to one of the corners of a *font* window and 
 
 5. Drawing black and white dots. Black dots are painted into the matrix by pointing to a location in the window and pressing the bottom mouse button. The drawing technique is to scratch black lines through the matrix dots as long as the mouse button is pressed. As soon as the button is released, the black dots appear in any area containing the black lines. White dots are painted by pointing to a location in the window and pressing the middle mouse button. White lines are written through the dots as long as the mouse button is pressed; white dots appear when the button is released.
 
-6. **New characters.*** When the window is first created, the character available for editing is the period, '.'. To change the character, place the mouse cursor inside the window and type, on the keyboard, the desired character.
+6. **New characters.** When the window is first created, the character available for editing is the period, '.'. To change the character, place the mouse cursor inside the window and type, on the keyboard, the desired character.
 
 Once a new font has been designed, it is saved on a disk file by typing:
 
@@ -467,7 +471,7 @@ The use of the name disp and the message `'s` are described in more detail in su
 
 Warning: some fonts have no definition for the character whose Ascii code is 31. This is the character used to mark the black dots. Any font without this character properly defined can not be used with this font editing system.
 
-[Page 9]
+==Page 9==
 ## Chapter II. WRITING SMALLTALK PROGRAMS
 
 ### Simple Manipulation of a Simple Program
@@ -476,7 +480,7 @@ To hand an object 'd' the meaning '3' in Smalltalk, we say:
 ```
 ☞d ← 3！
 ```
-(The ☞ is typed as ＜shift＞ ' (double-quote, " ) ). If you now say:
+(The ☞ is typed as ＜shift＞ ' — i.e., the double-quote " key.) If you now say:
 ```
 d！
 ```
@@ -529,7 +533,7 @@ defs！
 
 A list of the names `square` and `cl` should be typed back at you. `defs` is a kind of "bushel basket" which contains the names of user-defined programs.
 
-### How to Edit Your Definition (Not for LivelyWeb version which has not modified mouse-ops)
+### How to Edit Your Definition (Not for the LivelyWeb version, whose mouse operations are unmodified)
 
 In any dialog window, type:
 
@@ -831,7 +835,7 @@ but rather:
 ```
 to indicate the literal word rather than the city.
 
-[Page 16]
+==Page 16==
 #### Keyboard Equivalents
 
 (Note, there are usually several ways to type a special keyboard character. The following table presents the methods most commonly used.)
@@ -839,7 +843,7 @@ to indicate the literal word rather than the city.
 | To Get | You Type<br>(Not for LivelyWeb ver) | We Call It | (for LivelyWeb version) |
 |--------|----------|------------|-------------------------|
 |！ | LF | do it | \ |
-| ← | ＜shift＞ ' | hand | _ |
+| ☞ | ＜shift＞ ' | hand | " |
 | ∢ | ＜shift＞ 5 | eyeball (look for) | % |
 | ⦂ | ＜ctrl＞＜shift＞; |  | (Snippets transfer only ※) |
 | ⚿ | ＜ctrl＞ k | keyhole, "peek" | (Snippets transfer only ※) |
@@ -856,7 +860,7 @@ to indicate the literal word rather than the city.
 | ≠ | ＜ctrl＞ = | not equal | (Snippets transfer only ※) |
 | % | ＜ctrl＞ v | percent sign | (Snippets transfer only ※) |
 | @ | ＜ctrl＞ 2 | "at" sign | (Snippets transfer only ※) |
-|！ | ＜ctrl＞ 1 | exclamation | (Snippets transfer only ※) |
+|！ | ＜ctrl＞ 1 | explanation | (Snippets transfer only ※) |
 | " | ＜ctrl＞ 0 | double quote sign | (Snippets transfer only ※) |
 | $ | ＜ctrl＞ 4 | dollar sign | (Snippets transfer only ※) |
 
@@ -865,7 +869,7 @@ to indicate the literal word rather than the city.
 to kbd ch (☞ch ← TTY ○* 255. ch = 19 ⇒(⇑19) ⇑kmap[ch])！
 ```
 ```
-to kbd ch ("ch _ TTY &* 255. ch = 19 ?(!19) !kmap[ch])    for paste to Snippets window.
+to kbd ch ("ch _ TTY &* 255. ch = 19 ?(!19) !kmap[ch])    for pasting into the Snippets window.
 ```
 
 #### Summary of Special Dialog Window Operations
@@ -879,7 +883,7 @@ to kbd ch (☞ch ← TTY ○* 255. ch = 19 ⇒(⇑19) ⇑kmap[ch])！
 | fix ＜number＞ | Enters the Smalltalk editor for a command line in the dialog window. The line is ＜number＞ transactions back from where you are currently typing. |
 | redo ＜number＞ | Re-sends Smalltalk the message on command line ＜number＞ where the line is ＜number＞ transactions back from where you are currently typing. |
 
-[Page 17]
+==Page 17==
 ### Boxes: An Introduction to Smalltalk
 
 First get the `box` programs by typing:
@@ -934,7 +938,7 @@ and
 ```
 jill's size！
 ```
-(Don't forget that `'s` is typed as ＜ctrl＞ s) (Not for LivelyKernel version)
+(Don't forget that `'s` is typed as ＜ctrl＞ s) (Not for LivelyWeb version)
 
 We see from this and the little "movie" which we created that `joe` and `jill` are really separate entities which can do similar things.
 
@@ -956,17 +960,17 @@ show <classname>！
 The definition of `box` is:
 ```
 to box var : x y size tilt
-  (∢draw ⇒ ((☺ place x y turn tilt. square size.)
+  (∢draw ⇒ (☺ place x y turn tilt. square size.)
    ∢undraw ⇒ (☺ white. SELF draw. ☺ black)
    ∢turn ⇒ (SELF undraw. ☞tilt ← tilt + :. SELF draw.)
    ∢grow ⇒ (SELF undraw. ☞size ← size + :. SELF draw.)
    isnew ⇒ (☞x ← ☞y ← 256. ☞size ← 50. 
-         ☞tilt ← 0. SELF draw)},！
+         ☞tilt ← 0. SELF draw))！
 ```
 (Note: The original version uses "|" as the variable-type separator, but in this document this has been changed to ":" for the LivelyWeb version.)
 
 ```
-addto turtle ☞(∢place ⇒ (SELF penup goto (:)(:) pendn up. ⇑SELF)},！
+addto turtle ☞(∢place ⇒ (SELF penup goto (:)(:) pendn up. ⇑SELF))！
 ```
 ```
 to square length
@@ -1013,7 +1017,7 @@ In the title line, three different kinds of names can be specified: names for te
 
 The definition of the class `box` specifies two kinds of names: the four properties (*x*, *y*, *size*, *tilt*) that distinguish members of the class; and a temporary variable (*var*). Properties *x* and *y* define the location of the box on the screen; *size* is the length of each of its sides; and *tilt* is its angle of orientation on the screen. Hence, two members of the class `box` can have different screen locations, different sizes, and different orientations.
 
-[Page 20]
+==Page 20==
 #### Messages and Actions
 
 All members of the class `box` respond to messages to `grow`, `turn`, `draw` and `undraw`. Each member also responds to two messages which have been adopted as reasonable conventions for Smalltalk classes: a request to learn the class type (`is`), and a request to learn about the class' properties (`'s`). The messages that each member of the class can receive, and the actions each will take upon receiving a message, are given within parentheses after the title line.
@@ -1044,7 +1048,7 @@ Suppose a `box` sees the message `grow`. The action the `box` takes is to send i
 
 The action taken if a box sees the message `turn` is similar: the box tells itself to undraw, changes the value of the instance variable `tilt`, and then tells itself to draw again.
 
-[Page 21]
+==Page 21==
 #### The Message Draw
 
 The meaning of `draw` is to place the turtle at the box's screen location (x, y), turn the turtle in the box's orientation (`tilt`), and call on the object `square` with the message `size`, the length of each of the box's sides. `Undraw` simply changes the turtle's color to white (assuming the background color is white) in order to "erase" the drawing of the square box.
@@ -1134,7 +1138,7 @@ The method for responding to `is` (shown in the above definition of `box`) invol
 
 The "open colon" symbol (`⦂`) is a Smalltalk symbol that says: fetch the next token (the next word or the next words enclosed in parentheses) literally as it appears in the message. The ⦂ is similar to `∢` in looking at the message literally. However, the `⦂` always fetches in the next literal expression; the `∢` only fetches the expression if there is an exact match.
 
-[Page 23]
+==Page 23==
 #### The Message 's
 
 The message (`'s`) is, by convention, a request to evaluate the next token in the message within the context of the message receiver (typically, the class or the instance of the class). Suppose the size of the box joe is 50 and we say:
@@ -1181,7 +1185,7 @@ Similarly for messages containing the tokens `turn` or `move`. In order to chang
 
 The alternative box definition follows.
 
-[Page 25]
+==Page 25==
 ```
 to box var : x y size tilt
   (∢draw ⇒ (☺ place x y turn tilt. square size.)
@@ -1198,7 +1202,7 @@ to box var : x y size tilt
 
 **Extending the Box Definition.** There are several ways to extend or modify the `box` class. We will show one in the next section: the class of polygons, and, after introducing the class `turtle`, we modify the `box` class to be a class whose members each own an instance of the `turtle` class.
 
-[Page 26]
+==Page 26==
 ### Class of Polygons
 
 This simple extension to class `box` allows us to create objects that have any number of sides of equal length. The object that draws any polygon must ask the turtle to draw the appropriate number of lines. After drawing each line, the turtle has to turn enough units so that, after drawing all the lines, the turtle will have turned a complete circle (360 units). Since each angle of a polygon is equal, each turn is an even division of 360 (360/number-of-sides). A polygon-drawing routine is:
@@ -1217,7 +1221,7 @@ to polygon var : x y size tilt sides
   (∢draw ⇒ (☺ place x y turn tilt. poly sides size)
   
    ∢grow ⇒ (∢sides ⇒ (SELF redraw ☞sides ← sides + :.)
-              ∢size ⇒ (SELF redraw ☞size ← size + :.)))！
+              ∢size ⇒ (SELF redraw ☞size ← size + :.))
 
 ```
 ... The title line is similar to that of box;  
@@ -1256,7 +1260,7 @@ isnew ⇒ (☞sides ← :. ☞size ← 50.
           SELF draw.)
 ```
 
-[Page 27]
+==Page 27==
 ### Turtles
 
 The turtle examples in the first section showed some of the messages any turtle can understand. We can get a turtle to draw designs, sketch, and make diagrams with a number of useful and simple programs.
@@ -1305,7 +1309,7 @@ A simple design program might be: pokey go a little, turn some amount, go a litt
 
 ```
 to design var i
-      (☞var ← :. for i ← 1 to 300 (pokey go i turn var))！
+      (☞var ← :. for i to 300 (pokey go i turn var))！
 ```
 
 Try
@@ -1320,7 +1324,7 @@ design 91！
 It is probably better Smalltalk programming style to modify the turtle class definition and give turtles the ability to receive the *message design*. In this way, all turtles, not just `pokey`, will be able to draw designs. `addto` lets us add new messages and responses to class definitions. Try:
 
 ```
-addto turtle ☞(∢design ⇒ (☞var ← :. for i ← 1 to 300 (SELF go i turn var)))！
+addto turtle ☞(∢design ⇒ (☞var ← :. for i to 300 (SELF go i turn var)))！
 ```
 
 The explanations of `∢` (eyeball), `SELF`, and `⇒` were given in the previous section. Recall that `∢` is a method for looking at the message and seeing if there is a match between the next word in the message and the word following the `∢`. The use of `∢` is a test whose value is either not-false or false. The arrow (`⇒`) denotes a conditional statement of the form:
@@ -1330,7 +1334,7 @@ The explanations of `∢` (eyeball), `SELF`, and `⇒` were given in the previou
 <otherwise do this>
 ```
 
-[Page 29]
+==Page 29==
 ### Boxes Owning Turtles
 
 The definition of `box` as presented earlier depends on the turtle ☺ to draw each instance of the class. Each time an instance is drawn or erased, ☺ must be placed at the appropriate location facing in the appropriate direction. Rather than having to reposition ☺ each time, we might assign a turtle to each instance of box; since the instance "owns" its turtle, we can assume that the turtle is always correctly positioned.
@@ -1376,7 +1380,7 @@ There were several changes to the `box` definition.
 
 (3) `move`--the turtle remembers his, and therefore the box's, position. The box no longer has instance variables `x` and `y`.
 
-[Page 30]
+==Page 30==
 ### Dispframes: An Introduction to Text Display
 
 Smalltalk *dialog* windows are instances of the basic Smalltalk system class dispframe. Members of this class can show text in a rectangular area that can be framed with thick black lines. As you have already seen, Smalltalk can have many dispframes, each one capable of moving its screen position, changing its size, displaying text, and hiding itself (deleting its representation from the display screen). To do these tasks, an instance of dispframe understands messages such as moveto ＜upper left corner x＞ ＜upper left corner y＞, growto ∢ower right corner x＞ ∢ower right corner y＞, show, display, and hide. You have sent messages to the windows by pointing at one of the four corners. To help in this task, a dispframe understands the messages hasmouse, to determine whether or not the mouse cursor is inside the window; and corner ＜x＞ ＜y＞, to determine at which corner, if any, the mouse cursor points. The response to the message corner is a number between 1 and 4 depending on the display coordinates x,y.
@@ -1480,7 +1484,7 @@ dp moveto 50 50！
 dp display！  Now the frame is in a new position.
 ```
 
-[Page 32]
+==Page 32==
 ### Boxes as Menus
 
 The Smalltalk class editor uses two instances of dispframe. The first is the window containing the levels of the class definition; the second is the menu window. In each case, you were able to position the mouse cursor in the window and the editor was able to determine which character or word you were grabbing. Instances of dispframe understand three messages that aid in this task:
@@ -1524,7 +1528,7 @@ to polygonmenu i : dp codevector
 (isnew ⇒ (☞codevector ← ⦂.
           repeat (button 4 ⇒
                 (☞dp ← dispframe mx 75 my 120 string 100.
-                for i ← 1 to codevector length -1
+                for i to codevector length -1
                   (dp ← codevector[i] chars. dp ← 13).
                 done))))！
 ```
@@ -1630,7 +1634,7 @@ to polygonmenu i : dp codevector
           repeat (button 4 ⇒ (polygon (:) mx my. done)))
 isnew ⇒ (☞codevector ← ⦂.
           repeat (button 4 ⇒ (☞dp ← dispframe mx 75 my 120 string 100.
-                               for i ← 1 to codevector length -1
+                               for i to codevector length -1
                                  (dp ← codevector[i] chars. dp ← 13). done))))！
 ```
 
@@ -1652,7 +1656,7 @@ Here i[1] is the index into the vector of messages. We select an item from the v
 
 Chapters IV and V contain more information and examples about the classes dispframe and vector.
 
-[Page 36]
+==Page 36==
 ### A Few Sketching Tricks
 
 Some of our favorite design programs are presented below. Caution: if you copy these routines, be certain that you have a large enough window to accommodate all your typing. Smalltalk only sees text that you can see in the window. You can type part of the routine and add the rest by using the Smalltalk editor. Alternatively, you can retrieve these turtle routines from the disk pack by typing:
@@ -1687,10 +1691,10 @@ to hil i a b
     hil1 hil2 hil1)！
  
 to hil1
-  (☺ turn a. hil b - a. ☺ turn a)！
+  (☺ turn a. hil 0 - b. ☺ turn a)！
 
 to hil2
-  (☺ go 10. hil b. ☺ turn -a. ☺ go 10 turn -a. hil b. ☺ go 10)！
+  (☺ go 10. hil b. ☺ turn 0 - a. ☺ go 10 turn 0 - a. hil b. ☺ go 10)！
 ```
 
 i is the recursion number. Try:
@@ -1707,7 +1711,7 @@ to squig90
   (☺ home do 200
     (☺ go rand / 1000 turn 90 * rand mod 4)))！
     
-to rand (☞ctri ← i * 5)！
+to rand (⇑☞i ← i * 5)！
 ```
 
 Try:
@@ -1733,7 +1737,7 @@ Changing ink color and the width of the turtle's trace makes for interesting var
 ☺ home up turn 90. ☺'s width ← 2. dragon 8.！
 ```
 
-#### Sketching  (Not for LivelyWeb version unless point or mp)
+#### Sketching  (Not for LivelyWeb version, except when using point or mp)
 
 We can sketch by telling any turtle to follow the mouse cursor. For example,
 ```
@@ -1839,7 +1843,7 @@ to feder ox oy nx ny
      button 2 ⇒ (☺ erase)))！
     
 to abs x
-  ((☞x ← :) < a ⇒ (⇑0 - x) ⇑x)！
+  ((☞x ← :) < 0 ⇒ (⇑0 - x) ⇑x)！
 ```
 
 #### Cobwebs
@@ -1872,7 +1876,7 @@ In the black-and-white version of Smalltalk, type:
 cobweb (-3) (-3)！
 ```
 
-[Page 40]
+==Page 40==
 ### Paint Brush (Not for LivelyWeb version)
 
 Smalltalk also has a method for transferring blocks of designs, such as a solid black rectangle, or one specially constructed to resemble a gray "color". The basic method of interfacing brush painting to Smalltalk is through the class rectangle. This class definition is available by typing:
@@ -1884,15 +1888,17 @@ filin 'xyfns'！
 A sufficient abbreviated version is:
 
 ```
-to rectangle : origin extent
-  (∢has ⇒ (☞at ← :.
-             ⇑origin < at < origin + extent)
+to rectangle t : origin extent
+  (∢has ⇒ (☞t ← :.
+             ⇑origin < t < origin + extent)
    ∢center ⇒ (⇑ origin + point extent x/2 extent y/2)
    ∢'s ⇒ (⇑ ⦂ eval)
    ∢is ⇒ (ISIT eval)
    ∢paint ⇒ (CODE 43)
   isnew ⇒ (☞origin ← :. ☞extent ← :.))！
 ```
+
+> ※ The original omits the `<` comparisons in `∢has` (and the temporary `t` in the title); both are supplied here so `has` works.
 
 As you can see, this definition includes an escape to machine code (CODE) which supports the movement of bits on the display screen. The two instance variables, origin and extent, must be instances of the class point, a basic system class defined completely in Chapter IV. The class point is a method for working with two coordinates as one entity, for example, as a display point. To create a rectangle, type:
 
@@ -1992,7 +1998,7 @@ and so on. Some integers you might use as gray include (these are decimal number
 ```
 ¯1  32125  ¯5161  ¯21931  23130  15420  5160  ¯32126  0  11892  ¯10213  13260  51  ¯52
 ```
-(Recall that the negative indicator sign is typed as ＜shift＞-, that is, press the key marked '-' while holding down the key marked 'SHIFT'.) (Not for LivelyWeb ver but be typed as ` ) 
+(Recall that the negative indicator sign is typed as ＜shift＞-, that is, press the key marked '-' while holding down the key marked 'SHIFT'.) (For the LivelyWeb version, type ` instead.) 
 
 Suppose you want to create a shaped area of gray color in the upper left portion of the screen.
 ```
@@ -2055,13 +2061,13 @@ It requires twelve messages which are, in order:
 
 Without too much explanation, we offer the following useful definitions for saving and changing the shape and color of the mouse cursor.
 
-[Page 43]
+==Page 43==
 ```
 to cursor p buf gray
   (∢loadfrom ⇒
      (☞p ← :.
       BLT 281 1 0 16 0 16 0 mem 60 32 p x p y 0)
-   ∢copy to ⇒
+   ∢copyto ⇒
      (☞p ← :.
       BLT mem 60 32 p x 16 p y 16 0 281 1 0 0 0)
    ∢show ⇒
@@ -2069,7 +2075,7 @@ to cursor p buf gray
       BLT 281 1 0 16 0 16 0 p+2 1 0 0 0)
    ∢makebuff ⇒
      (☞buf ← string 32.
-      ☞p ← PNT buf,
+      ☞p ← PNT buf.
       BLT p+2 1 0 16 0 16 0 281 1 0 0 0.
       ⇑buf ))！
     
@@ -2102,7 +2108,7 @@ repeat (button 4 ⇒ (palette paint 8 mp tone))！
 
 The cursor looks like the paint brush！
 
-[Page 44]
+==Page 44==
 ## Chapter III. THE SMALLTALK WORLD AND ITS PRIMITIVES
 
 Up to this point, we have provided a "try it and see the flavour of what happens" style of presentation. In this chapter, and in the next, we modify the style in order to provide a direct discussion of the basic Smalltalk concepts: classes, instances, and message sending and receiving. We assume, however, that the reader has examined earlier chapters and is familiar with the special Smalltalk symbol set presented there. The following is a summary of these symbols.
@@ -2135,7 +2141,7 @@ Examples of objects:
 
 A message is sent to an object by first mentioning the object and then mentioning the message. Messages are simply strings of words separated by spaces. A "word" is either (1) a string of alphanumeric characters beginning with an alphabetic character, (2) a string of all numeric characters, or (3) one of the special symbols listed above, ☺, or any arithmetic operator.
 
-[Page 45]
+==Page 45==
 Examples of sending messages:
 
 | | Communication | Object | Message | Reply | Graphics Action |
@@ -2168,7 +2174,7 @@ Hence, after seeing the '+', the receiver (3) receives a value (4) and returns t
 
 In example 1, after the object 3 first sees the message +, the action ☞b ← :. tries to receive a value from the rest of the message. In this case, the rest of the message is 4+5. The 4 is a number also. It is sent the message +5, which will activate the same line in the definition of number as 3 was using. 4 sees the + and tries to get a value (5) into ITS 'b'. There is nothing more in the message so 4+5 is computed and 9 is returned to 3 as the value of its message. The 3 adds itself to the 9 and returns 12 to the original sender. All messages in Smalltalk are handled in a similar manner.
 
-[Page 46]
+==Page 46==
 | | Communication | Object | Message | Reply | Graphics Action
 |-|------------- | ------ | ------- | ----- | ---------------
 |2.| 5 mod 3 | 5 | mod 3 | 2 | none
@@ -2203,7 +2209,7 @@ Since everything in Smalltalk is an object and every object can send and receive
 
 If a number can answer the question is number affirmatively, then we can easily test the value in the previous example (which was given the name 'b') by:
 
-[Page 47]
+==Page 47==
 ```
 ∢mod ⇒ ((☞b ← :.) is number ⇒ (⇑SELF - b * SELF / b)
           error ☞('non-numeric operand'))
@@ -2251,7 +2257,7 @@ The ⦂ means receive the message "literally". We use it here because we don't w
 do a+b*5 ( ... )
 ```
 
-[Page 48]
+==Page 48==
 | | Communication | Object | Message | Reply | Graphics Action
 |-|-------------- | ------ | ------- | ----- | ---------------
 |6.| joe grow 50 | joe | grow 50 | none | joe, the box, grows his sides by 50 units; a larger box is displayed
@@ -2295,7 +2301,7 @@ For example, a send message is a control action because flow of control is suspe
 
 The independent state and message properties of Smalltalk make it possible to construct arbitrary structures or control structures.
 
-[Page 49]
+==Page 49==
 Here are some of the abilities which have already been built for you to use. In the table below, the word joe is the name of an object that has been created. In creating a Smalltalk object, an entry is formed in a dictionary; each entry has two parts--the name of the object and the value of the object. Typically, the object has value as a class or as an instance of a class. As explained in previous chapters, class definitions have information known locally to the class as a whole (class variables) or to each instance of the class individually. Information known locally to each instance is either retained as part of the description of the instance (instance variables) or exists only when the instance is actively doing something (temporary variables). Dictionaries exist at each level of definition and activation of classes and their instances: there is a "global" dictionary known to all objects, one for each class, one for each instance of each class, and one for each object currently active.
 
 | Message Form | Meaning |
@@ -2307,7 +2313,7 @@ Here are some of the abilities which have already been built for you to use. In 
 | ∢grow | look `∢` in the message to see if the token (grow) is literally there. The reply will be 'not-false' if the token grow is literally there and the next thing in the message will now be available for scrutiny. Otherwise, the reply will be 'false' and whatever was there is still available. |
 | : | The reply is the value of the next expression in the message. |
 | ⦂ | The reply is the next literal token in the message. |
-| & | Same as ⦂ except that the current place in the message will be retained regardless of the result of gathering the next token. This allows the receiver to "peek" at the message. |
+| ⚿ | Same as ⦂ except that the current place in the message will be retained regardless of the result of gathering the next token. This allows the receiver to "peek" at the message. |
 | # | The reply is a reference to the meaning (class or class instance) of the next expression in the message. So, for example, if we have ☞func ← #hp, then the value of func is a reference to the meaning of hp; i.e., if hp is a class definition, then func becomes another name for the definition hp. Hence, mentioning func is identical to mentioning hp. |
 
 The user can construct other ways to receive messages from these primitives (such as "receivers" which check the class of the received object, and so on).
@@ -2324,11 +2330,11 @@ a ⇒ (b) c ⇒ (d) ...
 
 if a evaluates to 'not-false' then evaluate b and continue evaluation after the next enclosing parentheses. Otherwise evaluate c; if it replies 'not-false', evaluate d and continue evaluation after the next enclosing parentheses. Otherwise ...
 
-[Page 50]
+==Page 50==
 The conditional expression a ⇒ (b) may be used anywhere in Smalltalk. Don't forget about the "escape" from the 'not-false' branch！ If you would like to deliver one value or another depending on a condition, enclose the expression in '( ... )'. Parentheses in Smalltalk serve a grouping or delimiting function: they delimit the 'then-clause' from the rest of a conditional expression; they delimit message parts to disambiguate or order the evaluation of the message; they group expressions for iteration using repeat or do; in general, they group a sequence of words together as a token that is received when the symbol `⦂` is used.
 
 ```
-3+(a⇒b ⇒ (4), 5),
+3+(a < b ⇒ (4) 5)
 ```
 
 will evaluate to 7 or 8, depending on the values associated with a and b. Here the outermost set of parentheses is used to order the evaluation of the message; the innermost parentheses define the limits of the 'then-clause' for the conditional statement. Some examples of conditionally structured evaluation include:
@@ -2376,7 +2382,7 @@ for i ← 2 to 50 by 4 do ( ... )
 Contents of ( ) will be re-executed until the value of index i, starting at 2 and stepped by 4 each time, exceeds 50. In general, the '←' part may be omitted and the default index start is 1; the 'by' part may be omitted and the default step is 1. If the 'to' part is omitted, the end condition value is the same as the start index value.
 
 ```
-do n( ... ),
+do n( ... )
 ```
 
 The contents of ( ) will be re-executed until the index counter N, starting at 1, equals n (i.e., for n ← 1 to n by 1). The counter N is not available as a number to use inside the parentheses.
@@ -2398,7 +2404,7 @@ where ＜value＞ is either the result of activating a class or activating an in
 
 Other available (basic) abilities are described in subsequent sections.
 
-[Page 51]
+==Page 51==
 ### The User Task
 
 Smalltalk has a USER task which is evaluated continually. You can see the message that is evaluated by typing:
@@ -2469,7 +2475,7 @@ This ability to let an object further examine the message depends on the method 
 
 The method of active return requires an explicit request to return the object. The Smalltalk symbol up arrow (⇑) is this explicit request. The form is ⇑＜value＞; the ＜value＞ is an object that can examine the rest of the message. All numbers return actively; the class turtle returns its instance values actively (hence their ability to cascade messages). By default, instances return themselves passively unless the definition includes ⇑ SELF as a response to each message. The class vector receives the message eval and actively returns the result. Hence, the result of read eval is an object that can receive the next message: print.
 
-[Page 53]
+==Page 53==
 ### The Form of Presentation of Smalltalk Classes 
 
 In the next chapter, we present definitions for the basic Smalltalk system: the classes already defined for general use, aids for interacting with Smalltalk and with the Smalltalk file system. Chapter V contains examples of applications of these classes. The basic Smalltalk classes will be presented by showing how instances of each class are created and what happens when messages are sent to a class instance. In most cases, the messages are annotated; in some cases, the actual definition of the class will be shown. For example, a version of the class `box` defined in Chapter II can be presented as:
@@ -2579,7 +2585,7 @@ joe turn 20*2！
 joe move 100 200！
 ```
 
-[Page 54]
+==Page 54==
 #### Abbreviations
 
 In order to present these examples a bit more concisely, we need to adopt some abbreviations.
@@ -2637,7 +2643,7 @@ joe move <number> <number>！
 ```
 joe erases, changes his coordinates, and redraws in a new location.
 
-[Page 55]
+==Page 55==
 ### A Smalltalk Class Example
 
 Link is a typically complete form which we present as an example of the conventions for presenting a class definition. It is a structure familiar to LISP users: pairs of objects which may in turn also be pairs. Instances of link receive and respond to the following messages.
@@ -2700,12 +2706,12 @@ I consist of (john. mary)
 
 The form of the class definition is:
 ```
-to link a,l h t : helpprint mailbox
+to link a : h t : helpprint mailbox
   (∢+ ⇒ (⇑link SELF: )
    ∢head ⇒ (⇑(∢← ⇒ (☞h ← :.) h))
-   ∢tail ⇒ (⇑(∢← ⇒ ((☞t ← :.) t))
+   ∢tail ⇒ (⇑(∢← ⇒ (☞t ← :.) t))
    ∢lprt ⇒ (helpprint SELF)
-   ∢print ⇒ (disp ← '{'. h print. disp ← '.'. t print. disp ← '}')
+   ∢print ⇒ (disp ← '('. h print. disp ← '.'. t print. disp ← ')')
    ∢is ⇒ (∢link ⇒ (⇑☞link) ∢? ⇒ (⇑☞link) ⦂. ⇑false.)
    ∢'s ⇒ (☞a ← ⦂. ⇑(∢← ⇒ (a ← :) a eval))
    ∢init ⇒ (☞helpprint ← # hp. ☞mailbox ← 'no mail'.)
@@ -2718,7 +2724,7 @@ to hp ob
    cr. disp ← 'I consist of '. ob print.)！
 ```
 
-[Page 56]
+==Page 56==
 ## Chapter IV. BASIC SMALLTALK SYSTEM CLASSES AND UTILITIES
 
 ### The Basic System Classes
@@ -2777,7 +2783,7 @@ a = <name>！
 ```
 Value of a if 'not-false', 'false' otherwise.
 
-[Page 57]
+==Page 57==
 #### Arithmetic
 
 There are two classes for handling numerical operations: number and float. They are compatible and interchangable. An operation containing both classes will have a reply in the class of the first object (that is, in the class of the object being sent the message).
@@ -2854,7 +2860,7 @@ Reply is the integer remainder.
 ```
 - a！
 ```
-Reply is the numeric negative of a. The unary minus is typed holding down the ＜shift＞ key and pressing -. (Not for LivelyWeb version, but be typed as ` )
+Reply is the numeric negative of a. The unary minus is typed holding down the ＜shift＞ key and pressing -. (For the LivelyWeb version, type ` instead.)
 
 ```
 a = <number>！
@@ -2887,25 +2893,31 @@ a ≥ <number>！
 Reply is a if 'not-false', 'false' otherwise.
 
 ```
-a ∧ <number>！
+a ○ <number>！
 ```
 Reply is the bitwise logical operation of the two values.
-logical AND
 
 ```
-a ∨ <number>！
+a ⊛ <number>！
 ```
-logical OR
+logical AND
 
 ```
 a ⊕ <number>！
 ```
+logical OR
+
+```
+a ⊖ <number>！
+```
 logical XOR
 
 ```
-a[] <number>！
+a ⊘ <number>！
 ```
 LSHIFT by the ＜number＞
+
+> ※ ビット演算子は原典では「○（円）に演算子を重ねた」1つのグリフ。本書では**説明・一覧では表示用の合成グリフ `○ ⊛ ⊕ ⊖ ⊘`**（総称○・AND⊛・OR⊕・XOR⊖・LSHIFT⊘）を用い、**実際に走らせるコード中では `○* ○+ ○- ○/`**（円＋演算子の2文字）で記す。後者は表示上は合成グリフ（⊛ 等）に見えるが、コピー＆ペーストで実行可能な形。
 
 ```
 a min <number>！
@@ -3002,7 +3014,7 @@ Reply is X where X ipow ＜float＞ = a.
 E.g., 27.0 epart 3.0！ Reply is 3.0.
 This is used for printing floating point numbers.
 
-[Page 60]
+==Page 60==
 #### Turtles for Drawing
 
 A turtle is a method for drawing on the display screen. The class turtle was introduced earlier in Chapters I and II. Turtles, like ☺, can receive any number of cascaded messages. For example:
@@ -3024,7 +3036,7 @@ However, there is no cascading after the 's message. A turtle's width can vary f
 
 **turtle**
 ```
-☞R ← turtle frame <dispframe>！
+☞☺ ← turtle frame <dispframe>！
 ```
 Turtle's range is defined by the boundaries of the dispframe.
 
@@ -3101,7 +3113,7 @@ Travels to the place represented by the point and does not change its direction.
 ```
 Prints the text (or the character represented by the Ascii code ＜integer＞) at the turtle's current location, with its direction, width and color.
 
-[Page 61]
+==Page 61==
 #### The False Class
 
 is a method for handling boolean operations.
@@ -3141,7 +3153,7 @@ bool > <message>！
 ```
 Evaluates message; reply is SELF.
 
-[Page 62]
+==Page 62==
 #### Sequential Dictionaries
 
 include the classes: vector, string, obset, stream, file.
@@ -3254,7 +3266,7 @@ a = <string>！
 ```
 Strings only. Reply is ＜string＞ if a is identical to ＜string＞; otherwise false.
 
-[Page 64]
+==Page 64==
 ###### Obsets
 
 Obsets are "bushel baskets" which can hold things for you. They can be used like mathematical sets (having only unique values) or like "bags" (being able to contain duplicate values). Instances of obset are frequently used as schedulers for the objects which they contain. For example, the display windows of various kinds are all contained in an obset called sched. An instance of obset owns its own instance of vector and provides a method for automatically expanding the vector, storing objects in the next available position in the vector, and removing objects.
@@ -3307,7 +3319,7 @@ sched map ☞(each run)！
 
 Many users add their own version of intersection, union, and so on, to the definition of obset.
 
-[Page 65]
+==Page 65==
 ###### Streams
 
 Streams are similar to the BCPL programming language method for storing and retrieving information. A pointer, i, is kept to the current stream item; pointer L keeps track of the last storable item. The actual storage method is either a string or a vector bound to the instance of stream. We use double quotes " to indicate optional forms.
@@ -3360,7 +3372,7 @@ s end！
 ```
 Returns 'true' if i is the end of the stream (i=L); otherwise returns 'false'.
 
-[Page 66]
+==Page 66==
 ###### Files (Not for LivelyWeb version)
 
 The Smalltalk file system provides for instances of the class directory divided into files. A file is found in a directory by its file name (fname). A file name must be an instance of the class string. Each file has in its local context a character pointer (bytec) and a 512-character string as an i/o buffer (sadr). Each file also knows the directory in which it can be found (dirinst).
@@ -3421,7 +3433,7 @@ Will print the names of all the files on the directory.
 
 **Reading and Writing a File**
 
-[Page 67]
+==Page 67==
 It is possible to read and write strings, words, or characters from a file. A word is simply two characters on even character boundaries, while a string is a set of n characters. In the following, local context for a file instance includes:
 
 | Variable | Description |
@@ -3464,7 +3476,7 @@ Write the number into the next word of fi.
 ```
 fi next into <text>！
 ```
-Read enough characters from fi to fill the string ＜text＞. This is essentially, but not identical code as, `for j ← 1 to <text> length do (<text>[j] ← fi next)`.
+Read enough characters from fi to fill the string ＜text＞. This is essentially, but not identical code as, `for j to <text> length do (<text>[j] ← fi next)`.
 
 ```
 fi flush！
@@ -3567,7 +3579,7 @@ Remove file from the files open list and flush the bittable and the current page
 fi close！
 ```
 
-[Page 69]
+==Page 69==
 #### Dispframe: The Basic Window Class
 
 ###### Text Display Routines
@@ -3842,7 +3854,7 @@ dmovec <integer> <integer> <integer> <integer> <integer> <integer> <integer>！
 ```
 same as dmove except that the non-intersecting source rectangular area is cleared.
 
-[Page 73]
+==Page 73==
 #### Point Class (Not for LivelyWeb ver)
 
 A point is an example of a storage method. Several examples of its use have already been given in the Chapter II section on sketching ideas.
@@ -3913,12 +3925,14 @@ to point a : x y
    ∢print ⇒ (☞point print. sp. x print. sp. y print))！
 ```
 
+> ※ The original manual omits the `≤` operators in the `∢≤` method (it prints as `x  a x ⇒ (⇑ y  a y)`); they are supplied here so the comparison works.
+
 Also provided in the basic Smalltalk system is the routine mp:
 ```
 to mp (⇑point mx my)！
 ```
 
-[Page 74]
+==Page 74==
 ### Aids for Interacting with Smalltalk
 
 #### The Smalltalk Class Editor
@@ -3964,7 +3978,7 @@ In the following, "text" refers to characters typed from the keyboard and termin
 | Leave | 0 | See the next higher level. |
 | Exit | 0 | Terminate editing. |
 
-[Page 75]
+==Page 75==
 The only exceptions are Enter and Up. If there is only one level marker, (), showing in the current level, no grabbing is required.
 
 #### Showing Stored Information
@@ -4091,7 +4105,7 @@ resume blockworld.sv <return>
 ```
 will restore you to the exact state when the file was saved.
 
-[Page 77]
+==Page 77==
 #### Utilities
 
 are already written programs which provide useful services such as reading the keyboard and the mouse, telling you how much room is available, and so forth.
@@ -4193,7 +4207,7 @@ read of <text>
 ```
 is the same as read except that the characters are found in ＜text＞ rather than taken from the keyboard.
 
-[Page 79]
+==Page 79==
 ```
 ev！
 ```
@@ -4402,7 +4416,7 @@ mem
 ```
 mem loads integers from and stores them into real core. The important locations are:
 
-**clock** (Nor for the original LivelyWeb version)
+**clock** (Not for the original LivelyWeb version)
 ```
 mem 0430
 ```
@@ -4472,7 +4486,7 @@ mem 0177030
 ```
 Reads the word with mouse and keyset bits.
 
-[Page 84]
+==Page 84==
 ## Chapter V. EXAMPLE SMALLTALK CLASS DEFINITIONS
 
 This chapter provides some examples of the use of various Smalltalk basic system classes and utilities. Included are samples of programming techniques as well as the contruction of new, interesting class definitions. The examples correspond to the basic classes defined in Chapter IV; they are presented in a "try it out" style with suggestions on problems and projects.
@@ -4591,7 +4605,9 @@ angle！
 
 We will also need a method for converting the floating point numbers to nearest whole dollar notation. We can send the message $ to members of the class float and receive the value rounded to the nearest dollar.
 
-[Page 86]
+> ※ `$` here is the dollar message — one of Smalltalk-72's special characters, not produced by the plain `$` key; type it as shown in the Keyboard Equivalents table (Chapter II), or copy-paste it.
+
+==Page 86==
 ```
 addto float ☞(∢$ ⇒ (⇑0.0 + (0 + (0.5 + SELF.) * 100) / 100))！
 ```
@@ -4614,13 +4630,13 @@ to payment principal interest period
  
    ☞increase ← (1.0 + rate) ipow (period * payments).
  
-   ☞amount ← ((principal * rate * increase) / (increase - 1)) ＄.
+   ☞amount ← ((principal * rate * increase) / (increase - 1)) $.
  
    report 'Each Payment is $ ' amount.
  
-   report 'Total Amount Paid is ＄' ☞total ← amount * (period * payments).
+   report 'Total Amount Paid is $' ☞total ← amount * (period * payments).
 
-   report 'Total Interest Paid ＄ ' total - principal.)！
+   report 'Total Interest Paid $ ' total - principal.)！
 ```
 Request four values
 Compute the rate, adding 0.0 to guarantee floating point number.
@@ -4643,12 +4659,12 @@ Amount of the Loan in decimal d--d.dd 🖥30000.00！
 Interest Rate as a percentage 🖥9！
 Number of Years to Pay Off the Loan 🖥30！
 Number of Payments per Year 🖥12！
-Each Payment is ＄ 241.0
-Total Amount Paid is ＄ 86760.0
-Total Interest Paid is ＄ 56760.0
+Each Payment is $ 241.0
+Total Amount Paid is $ 86760.0
+Total Interest Paid is $ 56760.0
 ```
 
-[Page 87]
+==Page 87==
 ### Sequential Dictionaries
 
 include the classes: vector, string, obset, stream, file.
@@ -4687,7 +4703,7 @@ copies a file named 'valuable' from disk 1 onto a newly created file of the same
 filin 'xfer'！
 ```
 
-[Page 88]
+==Page 88==
 The definition is:
 ```
 to xfer f g h i
@@ -4732,7 +4748,7 @@ to copym sourcedir destdir filenames ext i
    ☞destdir ← :.
    ☞filenames ← :.
    (null (☞ext ← :.) ⇒ (☞ext ← ''))
-   for i ← 1 to filenames length - 1
+   for i to filenames length - 1
        (xfer sourcedir file filenames[i] old to destdir file filenames[i] + ext new))！
 ```
 
@@ -4743,7 +4759,7 @@ xplot writes a screen image (bitmap) onto a file (86-87 disk pages, takes about 
 filin 'xplot'！
 ```
 
-[Page 89]
+==Page 89==
 The following definition requires the class AREA which is also provided below. Note AREA is a simple form of class rectangle defined in Chapter II and later in this chapter. The response of an instance of AREA to the message makebuff is a string containing the sequence of bits in the rectangular area. The file 'xplot' also includes the objects BLT, PNT, and bringitin. This last one is a method for restoring a display screen from a file written by the object xplot. It expects one message--the file name.
 
 ```
@@ -4761,7 +4777,7 @@ to PNT (mem 255 ← :. ⇑mem 255)！
 to xplot f h i r s w
   ((((☞f ← :) is file ⇒ ()
    ☞f ← file f ⇒ () ⇑false).
-   ☞w ← 255 & mem (☞h ← mem 272) + 1.
+   ☞w ← 255 ○* mem (☞h ← mem 272) + 1.
    (0 < mem h + 1 ⇒ (f next word ← 2.
                      ☞s ← 2 * mem h + 3)
    f next word ← 4. ☞s ← mem h + 3).
@@ -4785,7 +4801,7 @@ Default values.
 -word count followed by bits in scan line.
 Move the area down the screen.
 
-[Page 90]
+==Page 90==
 ### Dispframe
 
 **disp**: As explained in Chapter III, disp is the local name of any dialog window. It is, in fact, an instance of the class dispframe and is created as:
@@ -4826,7 +4842,7 @@ As an example both of using this generic name as well as of using the four displ
    ```
    Note only window 1 is erased.
    ```
-   for i ← 1 to 200 (turt1 go i turn 89)！
+   for i to 200 (turt1 go i turn 89)！
    ```
    Note the turtle draws lines only in its own window.
    ```
@@ -4842,7 +4858,7 @@ turt2's frame's (dclear frmx frmwd frmy frmht 13107)！
 turt3's frame's (dclear frmx frmwd frmy frmht 12121)！
 ```
 
-[Page 91]
+==Page 91==
 As examples of using dmove, try making window 4 small and then:
 ```
 to mover
@@ -4857,7 +4873,7 @@ do 10 (mover 1)！
 ```
 turt's window moves toward the bottom left corner, interacting with any information already displayed in the area.
 
-[Page 92]
+==Page 92==
 ### Point class (Not for LivelyWeb version)
 
 This data type is used to design the class rectangle which can compute areas of intersection between two rectangles and create the rectangle that encloses two rectangles. An abbreviated version of the class rectangle was introduced at the end of Chapter II section on Paint Brush. To obtain this definition of rectangle, type:
@@ -4908,7 +4924,7 @@ Draw a black border around the rectangular area.
 
 The code for the class rectangle and some useful routines follow. Note two messages (makebuff and loadbuff) used in the definition of AREA as stored on file 'xplot' could be included as messages understood by a rectangle.
 
-[Page 93]
+==Page 93==
 ```
 to rectangle a b c : origin extent
   (∢has ⇒
@@ -4949,6 +4965,9 @@ to rectangle a b c : origin extent
 
     isnew ⇒ (☞origin ← :. ☞extent ← :))！
 ```
+
+> ※ As in the abbreviated version (Chapter II), the original omits the `<` comparisons in `∢has`; supplied here so `has` works.
+
 Is a point inside rectangle?
 Expects bit patterns as a message
 Create a rectalble that is the intersection of c and SELF if they have common area else, 'false'.
@@ -4993,7 +5012,7 @@ xydemo！
 
 The result of pointing to different screen locations is a geometric design formed by the interaction of black, white, and gray rectangles.
 
-[Page 94]
+==Page 94==
 #### Dictionary of Areas and Points
 
 **An Obscure Challenge for the Day: when does this blow up?**
@@ -5034,7 +5053,7 @@ Then, we have:
 Create the main area and subareas.
 ```
 ☞menu ← vector 5！
-for i ← 1 to 5 do
+for i to 5 do
   (dictionary ← menu[i] ← rectangle point 45+(i-1)*14 30 point 14 14)！
 ```
 Store menu squares 1 - 5.
@@ -5077,7 +5096,7 @@ filin 'xydic'！
 to tryout this dictionary method.
 
 ```
-to xydic exp i input p val : allareas brect ncols xsize ysize
+to xydic exp i input p val : all areas brect ncols xsize ysize
   (∢index ⇒ (☞p ← :.
               ⇑1 + ((p x - brect's origin x) / xsize) 
                  + ncols * (p y - brect's origin y) / ysize)
@@ -5100,20 +5119,20 @@ to xydic exp i input p val : allareas brect ncols xsize ysize
              ☞brect ← (∢in⇒ (:) rectangle point 0 0 point 512 512).
              ☞ncols ← brect's extent x / xsize.
              ☞areas ← vector ncols * brect's extent y / ysize.
-             for p ← 1 to areas length (areas[p] ← obset).
+             for p to areas length (areas[p] ← obset).
              ☞all ← obset)
-   ∢print ⇒ ((for p ← 1 to areas length (areas[p] length print. sp.
+   ∢print ⇒ ((for p to areas length (areas[p] length print. sp.
                                            disp ← 'in area'. p print. cr))))！
 ```
 
-[Page 96]
+==Page 96==
 ### Turtles
 
 Try:
 ```
 ☞turt ← turtle frame dispframe 16 100 16 100 ''！
 turt home erase.！
-for i ← 1 to 300 (turt go i turn 89).！
+for i to 300 (turt go i turn 89).！
 turt's frame's (dcomp frmx frmwd frmy frmht).！
 ```
 
@@ -5205,26 +5224,26 @@ to see four dragon curves draw on the screen. For those curious, we include the 
 
 ```
 to commander a b : turts
-  (∢go ⇒ (☞a ← :. turts map ☞(go a). ⇑SELF),
-   ∢turn ⇒ (☞a ← :. turts map ☞(turn a). ⇑SELF),
-   ∢penup ⇒ (turts map ☞(penup). ⇑SELF),
-   ∢pendn ⇒ (turts map ☞(pendn). ⇑SELF),
-   ∢home ⇒ (turts map ☞(home). SELF pendn. ⇑SELF),
-   ∢fan ⇒ (for a ← 1 to turts length do
+  (∢go ⇒ (☞a ← :. turts map ☞(go a). ⇑SELF)
+   ∢turn ⇒ (☞a ← :. turts map ☞(turn a). ⇑SELF)
+   ∢penup ⇒ (turts map ☞(penup). ⇑SELF)
+   ∢pendn ⇒ (turts map ☞(pendn). ⇑SELF)
+   ∢home ⇒ (turts map ☞(home). SELF pendn. ⇑SELF)
+   ∢fan ⇒ (for a to turts length do
              (turts[a] turn(a - 1) * 360 / turts length.
-              turts[a]'s ink ← a + 1),.
-             ⇑SELF),
-   ∢'s ⇒ (∢ink ← (∢←. ☞a ← :.
-                    turts map ☞(vec[i]'s ink ← a)),
+              turts[a]'s ink ← a + 1).
+             ⇑SELF)
+   ∢'s ⇒ (∢ink ⇒ (∢←. ☞a ← :.
+                    turts map ☞(vec[i]'s ink ← a))
                     ∢width. ∢←. ☞a ← :.
-                    turts map ☞('s width ← a)),
+                    turts map ☞('s width ← a).)
    isnew ⇒ (☞a ← :.
              ☞turts ← vector a.
-             for b ← 1 to a (turts[b] ← turtle frame colorframe)
-             SELF home fan)))！
+             for b to a (turts[b] ← turtle frame colorframe)
+             SELF home fan))！
 ```
 
-[Page 98]
+==Page 98==
 ### Control Classes for Repetition and Alternate Paths
 
 **repeat, do, for, if**
@@ -5301,7 +5320,7 @@ to while Cond Exp
 ```
 to Boolean result
   (☞result ← :.
-   repeat (∢or ⇒ (result ⇒ ☺ ☞result ← :)
+   repeat (∢or ⇒ (result ⇒ (⦂) ☞result ← :)
            ∢and ⇒ (result ⇒ (☞result ← :) ⦂) 
            ⇑result))！
 ```
@@ -5332,7 +5351,7 @@ to until tempatom statement
     (∢do ⇒ (☞statement ← ⦂))
     (∢case ⇒ (repeat (☞tempatom ← ⦂.
                tempatom eval is event ⇒
-                 (∢:. tempatom eval newcode g.)
+                 (∢:. tempatom eval newcode ⦂.)
                done)))
     repeat (statement eval))！
 ```
@@ -5376,7 +5395,7 @@ A method for simulating case statements in Smalltalk is to index into a vector o
 
 Such a case statement can be seen in the routine used to realize a display window move, delete, create, or grow depending on which window corner has the mouse cursor. The routine returns 'false' if the cursor is not in a corner. Note, in the statements below, the index = 1 + corner selected.
 
-[Page 101]
+==Page 101==
 ```
 to frmedit disp
   (☞disp ← :.
@@ -5408,7 +5427,7 @@ disp corner mx my = 2
 ```
 Add 1 and we get an index of 3, picking out the code to delete the current window.
 
-[Page 102]
+==Page 102==
 
 # Scheduling Methods: sched and window
 
@@ -5525,7 +5544,7 @@ to stwindow
 ... frmedit was defined previously.
 ... newframe creates dispframe in the upper left corner of the display screen.
 
-[Page 104]
+==Page 104==
 ```
 to newframe f
   (☞f ← dispframe 16 256 16 112 string 1000 font disp's (font).
@@ -5596,7 +5615,7 @@ to edwindow a i : setname
 ... i is now a pointer to the class to be edited.
 ... Print the token 'edit:' followed by the names in the atom a.
 
-[Page 106]
+==Page 106==
 ### Picture Window
 
 This simple picture editor is an example of the use of a turtle "living" in a dispframe. It makes use of the class point as well as obset and apply.
@@ -5672,7 +5691,7 @@ to picturewindow var : df ☺ pics
 ... Sketch points stored in an obset.
 ... Create the window.
 
-[Page 107]
+==Page 107==
 # Loopless Scheduling
 
 The following is an attempt to select some conventions for scheduling classes, while minimizing, if not eliminating, the use of explicit repeat or for loops. We define startup, a method for waking up each class instance and giving each a chance to grab control and remain in control until some quit condition becomes true.
@@ -5711,7 +5730,7 @@ The class window which acted as a task master before is no longer needed. Method
 to prompt : t
   (∢firsttime ⇒ (disp ← 20)
    ∢quitif ⇒ (⇑t < mem 280)
-   <∢asttime ⇒ (disp ← 8)
+   ∢lasttime ⇒ (disp ← 8)
    isnew ⇒ (☞t ← 10 + mem 280))！
 ```
 
@@ -5791,7 +5810,7 @@ to edwindow a i : setname disp
 
 The prompt character is different.
 
-[Page 109]
+==Page 109==
 
 ```
 to picturewindow : df ☺ pics
@@ -5818,7 +5837,7 @@ to picturewindow : df ☺ pics
 
 Messages can now be sent directly to instances of `stwindow`, `edwindow`, and `picturewindow`.
 
-[Page 110]
+==Page 110==
 # A Sample Text Editor
 
 The purpose of this example is to demonstrate text management within a display frame (dispframe) - how to:
@@ -5871,7 +5890,7 @@ They indicate the beginning and ending of a selected subset of text.
 These points correspond to indices into the text string.
 Call the indices `loc1` and `loc2`.
 
-[Page 111]
+==Page 111==
 ```
 ☞loc1 ← ☞loc2 ← buf length.！
 ```
@@ -5926,7 +5945,7 @@ Since the last line may be the first line `p1---------p2`,
 dcomp p1 x (df (frmx + frmwd) - p1 x) p1 y fontheight.
 ```
 
-[Page 112]
+==Page 112==
 If we then redefine p1 as:
 ```
 ☞p1 ← point df frmx p1 y + fontheight.
@@ -5989,7 +6008,7 @@ Some other useful additions to basic system classes:
 ```
 ... Where disp is lowest possible window on the screen.
 
-[Page 113]
+==Page 113==
 ```
 addto dispframe
     ☞(∢dispset ⇒ (☞frmx ← ☞winx ← :.
@@ -6055,7 +6074,7 @@ repeat (☞char ← kbd.
 ... See if there is more to do.
 ... If not, replace/insert/append/delete completed.
 
-[Page 114]
+==Page 114==
 ### Making selection if button pressed: Algorithm B
 
 ```
@@ -6110,7 +6129,7 @@ to paragraph t tv |
               t ← 39. t ← buf. t ← 39.  
               t ← ' ' + last chars + ' at ' + pdisp frmx chars + ' ' +
                         frmy chars + ' ' + frmwd chars).
-              t close.),
+              t close.)
 ```
 ... temporary variables
 ... instance variables
@@ -6134,7 +6153,7 @@ to paragraph t tv |
 ... If told where, show area.
 ... Frame the window.
 
-[Page 115]
+==Page 115==
 ###### SEE TEXT
 ```
    ∢show ⇒ ((∢at ⇒ (pdisp dispset (:) (:) :))
@@ -6198,7 +6217,7 @@ to paragraph t tv |
 ```
 paragraph init！
 ```
-[Page 116]
+==Page 116==
 It is possible to schedule a paragraph text editor by typing:
 
 ```
@@ -6216,7 +6235,7 @@ sched ← paragraph of 'I am a text editing window'！
 ```
 ... window appears in upper left corner with the text showing.
 
-[Page 117]
+==Page 117==
 ### Classes for Building Models
 
 #### "Simpula": Simula-style Simulation
@@ -6253,7 +6272,7 @@ to EventNotice prop : ob msg etime prev next
    ∢is ⇒ (ISIT eval))！
 ```
 
-[Page 118]
+==Page 118==
 The sequencing set is not much more complex. It maintains now; current, the current process under activation; and the ordered set of EventNotices, set. In order to make this explanation simpler, we will include two dummy EventNotices with event times 0.0 and "infinity", that will, by default, be the first and the last elements in the set. This means that we will not have to check for a special termination condition, and that we avoid the possibility of a circular list. We always select the second item in set as the next active event.
 
 We need to provide messages to schedule a new event, to remove an event, and to activate the next event, as well as initialization for the set itself.
@@ -6315,7 +6334,7 @@ Simpula full！
 
 Reply is true if there is an event, other than the two dummy events, scheduled.
 
-[Page119]
+==Page 119==
 ```
 to SQS finger newOb time msg : now current set
   (isnew ⇒ (☞set ← EventNotice 0 0 0.0 0 0.
@@ -6347,6 +6366,8 @@ to SQS finger newOb time msg : now current set
    ∢is ⇒ (ISIT eval))！
 ```
 
+> ※ In `∢full`, the original reads `set's next ob`; the second `'s` is supplied here (`set's next's ob`) so the EventNotice's `ob` field is actually read. (The same fix applies to the simplified SQS in the hospital simulation below.)
+
 The above definitions are quite general, having two properties that might not be necessary in some applications: 
 1. backwards pointers for an EventNotice which take extra time to rechain, and 
 2. the instance variable current for SQS. As a response to the message activate, we say:
@@ -6367,7 +6388,7 @@ Now to test it out.
 
 By convention, a scheduled object, such as a blob, must respond to the default message (run) or to some equally useful activation message.
 
-[Page 120]
+==Page 120==
 ```
 to blob x y : sides ☺
   (isnew ⇒ (☞sides ← 0. ☞☺ ← turtle. ☺'s width ← 2. SELF draw)
@@ -6408,14 +6429,14 @@ Note, another rand expression, that avoids the need to initialize the variable a
 ```
 rand！
 rand between 10 40！
-to rand low high : n
+to rand low high : : n
   (☞n ← (null n ⇒ (13) n*5).
    ∢between ⇒ (☞low ← :. ☞high ← :.
                 ⇑ low + n mod high + 1 - low)
    ⇑ n)！
 ```
 
-[Page 121]
+==Page 121==
 #### A Simple Hospital Simulation
 
 A hospital will be composed of departments (including admissions, surgery, wards, labs), each of which has a number of resources (such as attendants, doctors, beds, operating tables) and patients. A typical patient (there will be many of them) has a name, age, and so on, a schedule which contains a route through the hospital specified at admissions, and a reference to the patient's current department.
@@ -6711,7 +6732,7 @@ Joseph finishes in dept[3] @10.0
 Jim finishes in dept[4] @11.0
 ```
 
-[Page 124]
+==Page 124==
 ### INDEX
 
 This index was prepared from a Smalltalk Information Storage and Retrieval System in which the contents of the sections of the manual are referenced. As a result, the pages given below generally refer to the beginnings of the sections in which the information can be found. We have identified three types of indexed items: basic system classes, utilities, and examples created especially for this manual. The basic classes and utilities are provided in the Smalltalk system when you type resume small.sv.
@@ -6725,8 +6746,8 @@ The index distinguishes between pages where the items are defined (def) and thos
 |**'s** |utility |def 23
 |**！** |basic |ref 2, 3, 15
 |**⇑** |basic |def 22, 48, 52<br>ref 15, 23, 44, 45
-|**∢** |basic |def 48<br>ref 15
-|**#** |basic |def 48Mbr>ref 23
+|**☞** |basic |def 48<br>ref 15
+|**#** |basic |def 48<br>ref 23
 |**∢** |basic |def 20, 22, 48<br>ref 15, 23, 44, 45
 |**:** |basic |def 11, 48<br>ref 18, 23, 44, 45
 |**⇒** |basic |def 48<br>ref 15, 44
@@ -6866,7 +6887,7 @@ The index distinguishes between pages where the items are defined (def) and thos
 |**type** |utility |def 75
 |**until** |example |def 98, 99
 |**USER** |basic |def 51<br>ref 102, 107, 117
-|**vector** |basic |def 62<br>ref 32, 34, 35, 37, 39, 44, 64 65, 75, 84, 94, 99, 100, 121
+|**vector** |basic |def 62<br>ref 32, 34, 35, 37, 39, 44, 64, 65, 75, 84, 94, 99, 100, 121
 |**waitnext** |example |def 92, 107<br>ref 100
 |**while** |example |def 98<br>ref 102-105
 |**window** |utility |def 69<br>ref 2, 7, 14, 32, 34, 35
@@ -6878,4 +6899,3 @@ The index distinguishes between pages where the items are defined (def) and thos
 |**xydic** |example |def 94
 |**xyfns** |example |def 92
 |**Zahn's Device** |example |def 99
-
