@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scan Sort — コンタクトシート</title>
+<style>
+  :root {
+    --base:      #14100d;
+    --sheet:     #1e1815;
+    --rule:      #33291f;
+    --emulsion:  #a89880;
+    --paper:     #ede4d6;
+    --safelight: #f2a93b;
+    --fixer:     #6fb6a8;
+    --marker:    #ffd23f;
+
+    --mono: ui-monospace, "SF Mono", "DejaVu Sans Mono", Menlo, Consolas, monospace;
+    --cond: "Arial Narrow", "Helvetica Neue", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    --jp: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    background: var(--base);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body.dragging .sheet { outline: 2px dashed var(--safelight); outline-offset: -10px; }
+
+  .sheet {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 22px 18px 48px;
+  }
+
+  /* ---- leader ------------------------------------------------------- */
+
+  .leader {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 12px;
+  }
+
+  .leader h1 {
+    font-family: var(--cond);
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .leader .sub {
+    color: var(--emulsion);
+    font-family: var(--jp);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .leader .clock {
+    margin-left: auto;
+    color: var(--emulsion);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+  }
+  .leader .clock b { color: var(--paper); font-weight: 500; }
+
+  /* ---- controls ----------------------------------------------------- */
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 18px;
+    padding: 14px 0 18px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+
+  .field > label {
+    font-family: var(--cond);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 11px;
+    color: var(--emulsion);
+  }
+
+  .field .val { color: var(--paper); font-variant-numeric: tabular-nums; }
+
+  input[type=range] { width: 132px; accent-color: var(--safelight); }
+
+  select {
+    background: var(--base);
+    border: 1px solid var(--rule);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 5px 7px;
+  }
+
+  input[type=number] {
+    width: 92px;
+    background: var(--base);
+    border: 1px solid var(--rule);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 5px 7px;
+  }
+
+  .buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  button, .btn {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--paper);
+    font-family: var(--cond);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 12px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: border-color .15s, color .15s;
+  }
+  button:hover, .btn:hover { border-color: var(--safelight); color: var(--safelight); }
+  button.primary, .btn.primary { border-color: var(--emulsion); }
+  .btn { cursor: pointer; }
+  .btn:focus-within { outline: 2px solid var(--safelight); outline-offset: 2px; }
+
+  /* Kept in the layout (not display:none) so the label reliably activates it. */
+  .vh {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0; border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .status {
+    font-family: var(--jp);
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 10px 0 0;
+    min-height: 1.6em;
+    color: var(--fixer);
+  }
+  .status.warn { color: var(--safelight); }
+
+  :focus-visible { outline: 2px solid var(--safelight); outline-offset: 2px; }
+
+  .hint {
+    color: var(--emulsion);
+    font-family: var(--jp);
+    font-size: 11.5px;
+    line-height: 1.7;
+    padding-top: 14px;
+  }
+  .hint kbd {
+    font-family: var(--mono);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 0 4px;
+    color: var(--paper);
+  }
+
+  /* ---- contact sheet ------------------------------------------------ */
+
+  .frames {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    padding-top: 20px;
+  }
+
+  .frame {
+    margin: 0;
+    background: var(--sheet);
+    border: 1px solid var(--rule);
+    padding: 8px 8px 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .frame .caption {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-family: var(--cond);
+    text-transform: uppercase;
+  }
+  .frame .name {
+    font-size: 15px;
+    letter-spacing: 0.16em;
+  }
+
+  .window {
+    position: relative;
+    background: var(--base);
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .window canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .frame.done { border-color: var(--fixer); }
+
+  .rank {
+    position: absolute;
+    right: 9px;
+    top: 4px;
+    font-family: var(--cond);
+    font-weight: 700;
+    font-size: 46px;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    color: var(--marker);
+    text-shadow: 0 0 3px rgba(0, 0, 0, .95), 0 3px 12px rgba(0, 0, 0, .8);
+    opacity: 0;
+    transition: opacity .3s ease-out;
+    pointer-events: none;
+  }
+  .rank small { font-size: 0.4em; margin-left: 1px; }
+  .frame.done .rank { opacity: 1; }
+
+  .meter { height: 2px; background: var(--rule); }
+  .meter i { display: block; height: 100%; width: 0; background: var(--fixer); }
+
+  .readout {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--emulsion);
+    font-variant-numeric: tabular-nums;
+  }
+  .frame.done .readout .state { color: var(--fixer); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meter i { transition: none; }
+  }
+
+  @media (max-width: 1040px) { .rank { font-size: 40px; } }
+  @media (max-width: 860px) {
+    .frames { grid-template-columns: repeat(2, 1fr); }
+    .rank { font-size: 48px; }
+  }
+  @media (max-width: 560px) {
+    .frames { grid-template-columns: 1fr; }
+    .leader h1 { font-size: 24px; }
+    .rank { font-size: 56px; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="leader">
+    <h1>Scan Sort</h1>
+    <span class="sub">9つの整列アルゴリズムが同じ画像を組み直す</span>
+    <span class="clock">FRAME <b id="frameCount">0</b> · <b id="doneCount">0</b>/9 完了</span>
+  </header>
+
+  <section class="controls">
+    <div class="field">
+      <label for="file">画像</label>
+      <label class="btn primary" for="file">画像を選ぶ</label>
+      <input id="file" class="vh" type="file" accept="image/*">
+    </div>
+
+    <div class="field">
+      <label for="items">分割数の上限 <span class="val" id="itemsVal"></span></label>
+      <input id="items" type="range" min="200" max="10000" step="100" value="1800">
+    </div>
+
+    <div class="field">
+      <label for="speed">速度 <span class="val" id="speedVal"></span></label>
+      <input id="speed" type="range" min="0.1" max="8" step="0.05" value="2">
+    </div>
+
+    <div class="field">
+      <label for="metric">速度の基準</label>
+      <select id="metric">
+        <option value="cmp" selected>比較回数</option>
+        <option value="loops">ループ回数</option>
+        <option value="access">配列アクセス（読み+書き）</option>
+        <option value="moved">移動回数</option>
+        <option value="weighted">移動回数（現状の重み付け）</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="seed">シード</label>
+      <input id="seed" type="number" value="42" min="0" step="1">
+    </div>
+
+    <div class="field">
+      <label>操作</label>
+      <div class="buttons">
+        <button id="toggle">一時停止</button>
+        <button id="restart">最初から</button>
+        <button id="reseed">シード変更</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="hint">
+    画像はここにドラッグしても読み込めます。処理はすべてブラウザ内で完結し、どこにも送信されません。<br>
+    キーボード：<kbd>Space</kbd> 一時停止 / <kbd>R</kbd> 最初から / <kbd>N</kbd> シード変更 / <kbd>+</kbd> <kbd>-</kbd> 速度
+  </p>
+
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+
+  <div class="frames" id="frames"></div>
+</div>
+
+<script>
+"use strict";
+
+/* ==================================================================
+   Sorting algorithms.
+   Ported from the Ruby enumerators; each generator mutates `a` and
+   yields [changed, highlight1, highlight2]. The event streams were
+   verified against the Ruby originals — identical counts and hashes.
+   ================================================================== */
+
+const swap = (a, i, j) => { const t = a[i]; a[i] = a[j]; a[j] = t; };
+
+function set(ev, moved, i, j, cmp, reads, writes) {
+  ev.moved = moved; ev.i = i; ev.j = j;
+  ev.cmp = cmp; ev.reads = reads; ev.writes = writes;
+  return ev;
+}
+
+function newEvent() {
+  return { moved: 0, i: 0, j: 0, cmp: 0, reads: 0, writes: 0 };
+}
+
+function* selection(a, ev) {
+  const n = a.length;
+  for (let i = 0; i <= n - 2; i++) {
+    let min = i;
+    for (let j = i + 1; j <= n - 1; j++) {
+      const less = a[j] < a[min];
+      yield set(ev, 0, j, min, 1, 2, 0);
+      if (less) min = j;
+    }
+    if (min !== i) { swap(a, i, min); yield set(ev, 1, i, min, 0, 2, 2); }
+    else yield set(ev, 0, i, i, 0, 0, 0);
+  }
+}
+
+function* insertion(a, ev) {
+  const n = a.length;
+  for (let i = 1; i <= n - 1; i++) {
+    let j = i, moved = false;
+    for (;;) {
+      if (j === 0) break;                       // short-circuits before any read
+      const gt = a[j - 1] > a[j];
+      yield set(ev, 0, j - 1, j, 1, 2, 0);
+      if (!gt) break;
+      swap(a, j - 1, j);
+      yield set(ev, 1, j - 1, j, 0, 2, 2);
+      moved = true;
+      j -= 1;
+    }
+    if (!moved) yield set(ev, 0, j, j, 0, 0, 0);
+  }
+}
+
+function* heap(a, ev) {
+  const n = a.length;
+  function* siftDown(root, size) {
+    for (;;) {
+      const child = root * 2 + 1;
+      if (child >= size) break;
+      let s = root;
+      const c1 = a[s] < a[child];
+      yield set(ev, 0, s, child, 1, 2, 0);
+      if (c1) s = child;
+      const right = child + 1;
+      if (right < size) {
+        const c2 = a[s] < a[right];
+        yield set(ev, 0, s, right, 1, 2, 0);
+        if (c2) s = right;
+      }
+      if (s === root) break;
+      swap(a, root, s);
+      yield set(ev, 1, root, s, 0, 2, 2);
+      root = s;
+    }
+  }
+  for (let start = Math.floor(n / 2) - 1; start >= 0; start--) yield* siftDown(start, n);
+  for (let finish = n - 1; finish >= 1; finish--) {
+    swap(a, 0, finish);
+    yield set(ev, 1, 0, finish, 0, 2, 2);
+    yield* siftDown(0, finish);
+  }
+}
+
+function* bubble(a, ev) {
+  let finish = a.length - 1;
+  while (finish > 0) {
+    let swapped = false;
+    for (let i = 0; i <= finish - 1; i++) {
+      const gt = a[i] > a[i + 1];
+      yield set(ev, 0, i, i + 1, 1, 2, 0);
+      if (!gt) continue;
+      swap(a, i, i + 1);
+      yield set(ev, 1, i, i + 1, 0, 2, 2);
+      swapped = true;
+    }
+    if (!swapped) break;
+    finish -= 1;
+  }
+}
+
+function* cocktail(a, ev) {
+  let left = 0, right = a.length - 1;
+  while (left < right) {
+    let swapped = false;
+    for (let i = left; i <= right - 1; i++) {
+      const gt = a[i] > a[i + 1];
+      yield set(ev, 0, i, i + 1, 1, 2, 0);
+      if (!gt) continue;
+      swap(a, i, i + 1);
+      yield set(ev, 1, i, i + 1, 0, 2, 2);
+      swapped = true;
+    }
+    if (!swapped) break;
+    right -= 1;
+    swapped = false;
+    for (let i = right; i >= left + 1; i--) {
+      const gt = a[i - 1] > a[i];
+      yield set(ev, 0, i - 1, i, 1, 2, 0);
+      if (!gt) continue;
+      swap(a, i - 1, i);
+      yield set(ev, 1, i - 1, i, 0, 2, 2);
+      swapped = true;
+    }
+    if (!swapped) break;
+    left += 1;
+  }
+}
+
+function* circle(a, ev) {
+  const n = a.length;
+  for (;;) {
+    let swapped = false;
+    const ranges = [[0, n - 1]];
+    while (ranges.length) {
+      const [low, high] = ranges.pop();
+      if (low >= high) continue;
+      let left = low, right = high;
+      while (left < right) {
+        const gt = a[left] > a[right];
+        yield set(ev, 0, left, right, 1, 2, 0);
+        if (gt) {
+          swap(a, left, right);
+          yield set(ev, 1, left, right, 0, 2, 2);
+          swapped = true;
+        }
+        left += 1; right -= 1;
+      }
+      if (left === right && right + 1 <= high) {
+        const gt = a[left] > a[right + 1];
+        yield set(ev, 0, left, right + 1, 1, 2, 0);
+        if (gt) {
+          swap(a, left, right + 1);
+          yield set(ev, 1, left, right + 1, 0, 2, 2);
+          swapped = true;
+        }
+      }
+      const middle = Math.floor((high - low) / 2);
+      const lr = [low, low + middle];
+      const rr = [low + middle + 1, high];
+      if (rr[0] < rr[1]) ranges.push(rr);
+      if (lr[0] < lr[1]) ranges.push(lr);
+    }
+    if (!swapped) break;
+  }
+}
+
+function* merge(a, ev) {
+  const n = a.length;
+  const work = new Array(n);
+  let width = 1;
+  while (width < n) {
+    let left = 0;
+    while (left < n) {
+      const middle = Math.min(left + width, n);
+      const right = Math.min(left + width * 2, n);
+      let i = left, j = middle, k = left;
+
+      while (i < middle || j < right) {
+        let fromLeft, cmp = 0, reads = 0;
+        if (j >= right) fromLeft = true;              // no read: loop bound only
+        else if (i >= middle) fromLeft = false;
+        else { fromLeft = a[i] <= a[j]; cmp = 1; reads = 2; }
+
+        if (fromLeft) { work[k] = a[i]; i += 1; } else { work[k] = a[j]; j += 1; }
+        yield set(ev, 0, fromLeft ? i - 1 : j - 1, k, cmp, reads + 1, 1);
+        k += 1;
+      }
+
+      for (let p = left; p <= right - 1; p++) {
+        const same = a[p] === work[p];
+        yield set(ev, 0, p, p, 1, 2, 0);
+        if (same) continue;
+        a[p] = work[p];
+        yield set(ev, 1, p, p, 0, 1, 1);
+      }
+
+      left += width * 2;
+    }
+    width *= 2;
+  }
+}
+
+function* quick(a, ev) {
+  const stack = [[0, a.length - 1]];
+  while (stack.length) {
+    const [low, high] = stack.pop();
+    if (low >= high) continue;
+
+    const pivot = a[high];
+    yield set(ev, 0, high, high, 0, 1, 0);          // loading the pivot
+
+    let store = low;
+    for (let i = low; i <= high - 1; i++) {
+      const le = a[i] <= pivot;                      // pivot is cached
+      yield set(ev, 0, i, high, 1, 1, 0);
+      if (!le) continue;
+      if (i !== store) { swap(a, i, store); yield set(ev, 1, i, store, 0, 2, 2); }
+      store += 1;
+    }
+    if (store !== high) { swap(a, store, high); yield set(ev, 1, store, high, 0, 2, 2); }
+
+    const l = [low, store - 1], r = [store + 1, high];
+    if (l[1] - l[0] > r[1] - r[0]) {
+      if (l[0] < l[1]) stack.push(l);
+      if (r[0] < r[1]) stack.push(r);
+    } else {
+      if (r[0] < r[1]) stack.push(r);
+      if (l[0] < l[1]) stack.push(l);
+    }
+  }
+}
+
+function* shell(a, ev) {
+  let gap = Math.floor(a.length / 2);
+  while (gap > 0) {
+    for (let i = gap; i <= a.length - 1; i++) {
+      let j = i;
+      for (;;) {
+        if (j < gap) break;                          // short-circuits before any read
+        const gt = a[j - gap] > a[j];
+        yield set(ev, 0, j - gap, j, 1, 2, 0);
+        if (!gt) break;
+        swap(a, j - gap, j);
+        yield set(ev, 1, j - gap, j, 0, 2, 2);
+        j -= gap;
+      }
+    }
+    gap = Math.floor(gap / 2);
+  }
+}
+
+const SPECS = [
+  { title: "Selection", gen: selection, budget: 4 },
+  { title: "Insertion", gen: insertion, budget: 420 },
+  { title: "Heap",      gen: heap,      budget: 30 },
+  { title: "Bubble",    gen: bubble,    budget: 500 },
+  { title: "Cocktail",  gen: cocktail,  budget: 500 },
+  { title: "Circle",    gen: circle,    budget: 40 },
+  { title: "Merge",     gen: merge,     budget: 35 },
+  { title: "Quick",     gen: quick,     budget: 25 },
+  { title: "Shell",     gen: shell,     budget: 45 }
+];
+
+/* ==================================================================
+   Grid: derive the height from the width so a sample cell covers the
+   same distance on both axes. Same rule as the Ruby choose_grid.
+   ================================================================== */
+
+// What a "step" means. Every mode reads the same event stream; they differ
+// only in what they charge for each event. The coefficients are the measured
+// worst case for that metric expressed in n^2, so one budget rule fits all.
+const METRICS = {
+  weighted: { label: "移動（現状の重み付け）", cost: e => e.moved, perAlgorithm: true },
+  moved:    { label: "移動",                   cost: e => e.moved, coef: 0.25 },
+  loops:    { label: "ループ",                 cost: () => 1,      coef: 0.75 },
+  cmp:      { label: "比較",                   cost: e => e.cmp,   coef: 0.50 },
+  access:   { label: "配列アクセス",           cost: e => e.reads + e.writes, coef: 2.0 }
+};
+
+// The slowest algorithm should take about this many frames at speed 1.
+const FRAMES_TARGET = 3600;
+
+// A ceiling on generator steps per panel per frame, so one pathological panel
+// cannot wedge the loop. It is deliberately far above what a fair budget needs
+// even at 10,000 cells; in practice it only binds in "移動回数" mode, where
+// selection sort performs O(n) comparisons for every single move.
+const MAX_STEPS = 150000;
+
+const CELL_ASPECT_TOLERANCE = 0.01;
+
+function chooseGrid(sw, sh, maxItems, cap = 512) {
+  const candidates = [];
+  const limit = Math.min(sw, cap);
+  for (let w = 1; w <= limit; w++) {
+    const h = Math.max(Math.round(sh * w / sw), 1);
+    if (h > sh || h > cap) break;
+    if (w * h > maxItems) break;
+    candidates.push([w, h, Math.abs((sw / w) / (sh / h) - 1)]);
+  }
+  if (!candidates.length) return [1, 1];
+  const ok = candidates.filter(c => c[2] <= CELL_ASPECT_TOLERANCE);
+  const best = ok.length
+    ? ok.reduce((x, y) => (x[0] * x[1] >= y[0] * y[1] ? x : y))
+    : candidates.reduce((x, y) => (x[2] <= y[2] ? x : y));
+  return [best[0], best[1]];
+}
+
+/* ==================================================================
+   Deterministic shuffle
+   ================================================================== */
+
+function mulberry32(seed) {
+  let t = seed >>> 0;
+  return function () {
+    t = (t + 0x6d2b79f5) >>> 0;
+    let x = t;
+    x = Math.imul(x ^ (x >>> 15), x | 1);
+    x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function shuffled(n, seed) {
+  const rng = mulberry32(seed);
+  const a = new Int32Array(n);
+  for (let i = 0; i < n; i++) a[i] = i;
+  for (let i = n - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+/* ==================================================================
+   State
+   ================================================================== */
+
+const HL = [242, 169, 59]; // safelight
+
+const ui = {
+  frames:   document.getElementById("frames"),
+  file:     document.getElementById("file"),
+  status:   document.getElementById("status"),
+  items:    document.getElementById("items"),
+  itemsVal: document.getElementById("itemsVal"),
+  speed:    document.getElementById("speed"),
+  speedVal: document.getElementById("speedVal"),
+  seed:     document.getElementById("seed"),
+  metric:   document.getElementById("metric"),
+  toggle:   document.getElementById("toggle"),
+  restart:  document.getElementById("restart"),
+  reseed:   document.getElementById("reseed"),
+  frameCount: document.getElementById("frameCount"),
+  doneCount:  document.getElementById("doneCount")
+};
+
+// Intrinsic width to render each panel at. A cell therefore carries a whole
+// TILE of the source image, not a single averaged pixel, so a solved panel
+// reproduces the picture itself rather than a mosaic of it.
+const TARGET_W = 640;
+
+const state = {
+  image: null,       // HTMLImageElement or canvas
+  gw: 0, gh: 0,
+  tile: 1,
+  cw: 0, ch: 0,      // canvas size = gw*tile x gh*tile
+  srcData: null,     // Uint8ClampedArray of the source drawn at cw x ch
+  panels: [],
+  n: 0,
+  metric: "cmp",
+  running: true,
+  frame: 0,
+  finished: 0
+};
+
+/* ---- panel construction ------------------------------------------- */
+
+function buildFrames() {
+  ui.frames.innerHTML = "";
+  state.panels = SPECS.map(spec => {
+    const fig = document.createElement("figure");
+    fig.className = "frame";
+    fig.innerHTML = `
+      <figcaption class="caption">
+        <span class="name">${spec.title}</span>
+      </figcaption>
+      <div class="window">
+        <canvas></canvas>
+        <span class="rank" aria-hidden="true"></span>
+      </div>
+      <div class="meter"><i></i></div>
+      <div class="readout"><span class="events">—</span><span class="state">待機</span></div>`;
+    ui.frames.appendChild(fig);
+    return {
+      spec, el: fig,
+      canvas: fig.querySelector("canvas"),
+      rank:   fig.querySelector(".rank"),
+      bar:    fig.querySelector(".meter i"),
+      eventsEl: fig.querySelector(".events"),
+      status: fig.querySelector(".state")
+    };
+  });
+}
+
+/* ---- image handling ------------------------------------------------ */
+
+function proceduralImage() {
+  const c = document.createElement("canvas");
+  c.width = 640; c.height = 360;
+  const ctx = c.getContext("2d");
+  const img = ctx.createImageData(c.width, c.height);
+  const d = img.data;
+  for (let y = 0; y < c.height; y++) {
+    for (let x = 0; x < c.width; x++) {
+      const nx = x / c.width - 0.5, ny = y / c.height - 0.5;
+      const r = Math.hypot(nx, ny * 1.6);
+      const ang = Math.atan2(ny, nx);
+      const band = 0.5 + 0.5 * Math.sin(r * 22 + ang * 2);
+      const o = (y * c.width + x) * 4;
+      d[o]     = 20 + 225 * Math.min(1, band * (1 - r * 0.7));
+      d[o + 1] = 24 + 150 * Math.min(1, (1 - band) * 0.9 + r * 0.5);
+      d[o + 2] = 30 + 170 * Math.min(1, 0.35 + Math.sin(ang * 3 + r * 8) * 0.4);
+      d[o + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  return c;
+}
+
+function sampleSource(source, w, h) {
+  const c = document.createElement("canvas");
+  c.width = w; c.height = h;
+  const ctx = c.getContext("2d", { willReadFrequently: true });
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(source, 0, 0, w, h);
+  return ctx.getImageData(0, 0, w, h).data;
+}
+
+/* Copy one tile of the source into the slot it currently occupies. */
+function blitTile(p, slot) {
+  const { tile, gw, cw, srcData } = state;
+  const dst = p.imageData.data;
+  const from = p.order[slot];
+  const sx = (from % gw) * tile, sy = ((from / gw) | 0) * tile;
+  const dx = (slot % gw) * tile, dy = ((slot / gw) | 0) * tile;
+  const span = tile * 4;
+  for (let r = 0; r < tile; r++) {
+    const so = ((sy + r) * cw + sx) * 4;
+    dst.set(srcData.subarray(so, so + span), ((dy + r) * cw + dx) * 4);
+  }
+}
+
+/* Ring the tile rather than filling it, so the picture stays visible. */
+function outlineTile(p, slot) {
+  const { tile, gw, cw } = state;
+  const d = p.imageData.data;
+  const dx = (slot % gw) * tile, dy = ((slot / gw) | 0) * tile;
+  const last = tile - 1;
+  for (let r = 0; r < tile; r++) {
+    const edgeRow = r === 0 || r === last;
+    for (let c = 0; c < tile; c++) {
+      if (!edgeRow && c !== 0 && c !== last) continue;
+      const o = ((dy + r) * cw + dx + c) * 4;
+      d[o] = HL[0]; d[o + 1] = HL[1]; d[o + 2] = HL[2]; d[o + 3] = 255;
+    }
+  }
+}
+
+/* ---- (re)start ----------------------------------------------------- */
+
+function rebuild() {
+  const source = state.image;
+  const maxItems = Number(ui.items.value);
+  const sw = source.naturalWidth || source.width;
+  const sh = source.naturalHeight || source.height;
+  const [gw, gh] = chooseGrid(sw, sh, maxItems);
+
+  // Cells are near-square, so square tiles preserve the picture's proportions.
+  const tile = Math.max(2, Math.min(40, Math.round(TARGET_W / gw)));
+  const cw = gw * tile, ch = gh * tile;
+
+  let srcData;
+  try {
+    srcData = sampleSource(source, cw, ch);
+  } catch (err) {
+    state.srcData = null;
+    say("この画像のピクセルを読み取れませんでした。ページをブラウザで直接開くと解決することがあります。", true);
+    return;
+  }
+
+  state.gw = gw; state.gh = gh;
+  state.tile = tile; state.cw = cw; state.ch = ch;
+  state.srcData = srcData;
+
+  const n = gw * gh;
+  state.n = n;
+  const seed = Number(ui.seed.value) | 0;
+  const base = shuffled(n, seed);
+
+  state.frame = 0;
+  state.finished = 0;
+
+  state.panels.forEach(p => {
+    p.order = Int32Array.from(base);
+    p.ev = newEvent();
+    p.runner = p.spec.gen(p.order, p.ev);
+    p.done = false;
+    p.count = { weighted: 0, moved: 0, loops: 0, cmp: 0, access: 0 };
+    p.highlights = [];
+    p.dirty = [];
+
+    p.canvas.width = cw;
+    p.canvas.height = ch;
+    p.ctx = p.canvas.getContext("2d");
+    p.imageData = p.ctx.createImageData(cw, ch);
+
+    for (let slot = 0; slot < n; slot++) blitTile(p, slot);
+    p.ctx.putImageData(p.imageData, 0, 0);
+
+    p.el.classList.remove("done");
+    p.rank.textContent = "";
+    p.el.querySelector(".window").style.aspectRatio = `${cw} / ${ch}`;
+    p.bar.style.width = "0%";
+    p.status.textContent = "整列中";
+    p.eventsEl.textContent = "0 回";
+  });
+
+  updateClock();
+}
+
+/* ---- per-frame work ------------------------------------------------ */
+
+function budgetFor(panel, metric, speed) {
+  const m = METRICS[metric];
+  if (m.perAlgorithm) return Math.max(Math.round(panel.spec.budget * speed), 1);
+  const n = state.n;
+  return Math.max(Math.round(speed * m.coef * n * n / FRAMES_TARGET), 1);
+}
+
+function step(panel, speed) {
+  if (panel.done) return;
+
+  const dirty = panel.dirty;
+  dirty.length = 0;
+  for (const h of panel.highlights) if (h >= 0) dirty.push(h);
+
+  const metric = state.metric;
+  const cost = METRICS[metric].cost;
+  const budget = budgetFor(panel, metric, speed);
+  const count = panel.count;
+
+  let spent = 0, steps = 0;
+  let first = -1, second = -1;
+
+  while (spent < budget && steps < MAX_STEPS) {
+    const next = panel.runner.next();
+    if (next.done) {
+      panel.done = true;
+      panel.highlights = [];
+      state.finished += 1;
+      panel.el.classList.add("done");
+      panel.rank.innerHTML = `${state.finished}<small>着</small>`;
+      panel.status.textContent = "完了";
+      panel.bar.style.width = "100%";
+      return;
+    }
+    const e = next.value;
+    steps += 1;
+    spent += cost(e);
+
+    count.loops += 1;
+    count.cmp += e.cmp;
+    count.access += e.reads + e.writes;
+    if (e.moved) {
+      count.moved += 1;
+      count.weighted += 1;
+      dirty.push(e.i, e.j);
+    }
+    first = e.i; second = e.j;
+  }
+
+  panel.highlights = first === second ? [first] : [first, second];
+  for (const h of panel.highlights) if (h >= 0) dirty.push(h);
+}
+
+function paint(p) {
+  const dirty = p.dirty;
+  if (!dirty.length) return;
+
+  const { tile, gw } = state;
+  const n = p.order.length;
+
+  if (dirty.length >= n) {
+    for (let slot = 0; slot < n; slot++) blitTile(p, slot);
+    for (const h of p.highlights) if (h >= 0) outlineTile(p, h);
+    p.ctx.putImageData(p.imageData, 0, 0);
+    return;
+  }
+
+  let minC = Infinity, maxC = -1, minR = Infinity, maxR = -1;
+
+  for (let i = 0; i < dirty.length; i++) {
+    const slot = dirty[i];
+    if (slot < 0) continue;
+    blitTile(p, slot);
+    const c = slot % gw, r = (slot / gw) | 0;
+    if (c < minC) minC = c;
+    if (c > maxC) maxC = c;
+    if (r < minR) minR = r;
+    if (r > maxR) maxR = r;
+  }
+  if (maxC < 0) return;
+
+  for (const h of p.highlights) if (h >= 0) outlineTile(p, h);
+
+  // Upload only the region that actually moved.
+  p.ctx.putImageData(
+    p.imageData, 0, 0,
+    minC * tile, minR * tile,
+    (maxC - minC + 1) * tile, (maxR - minR + 1) * tile
+  );
+}
+
+function updateClock() {
+  ui.frameCount.textContent = state.frame.toLocaleString("ja-JP");
+  ui.doneCount.textContent = state.finished;
+}
+
+let lastReadout = 0;
+
+function tick() {
+  requestAnimationFrame(tick);
+  if (!state.running || !state.srcData) return;
+
+  const speed = Number(ui.speed.value);
+  state.frame += 1;
+
+  for (const p of state.panels) {
+    step(p, speed);
+    paint(p);
+  }
+
+  const now = performance.now();
+  if (now - lastReadout > 120) {
+    lastReadout = now;
+    for (const p of state.panels) {
+      p.eventsEl.textContent = `${p.count[state.metric].toLocaleString("ja-JP")} 回`;
+      if (!p.done) {
+        const total = p.order.length;
+        let placed = 0;
+        for (let i = 0; i < total; i++) if (p.order[i] === i) placed++;
+        p.bar.style.width = `${(placed / total * 100).toFixed(1)}%`;
+      }
+    }
+    updateClock();
+  }
+}
+
+/* ---- wiring -------------------------------------------------------- */
+
+function say(message, warn) {
+  ui.status.textContent = message || "";
+  ui.status.classList.toggle("warn", Boolean(warn));
+}
+
+function loadFile(file) {
+  if (!file) return;
+  if (!file.type || !file.type.startsWith("image/")) {
+    say(`${file.name || "そのファイル"} は画像ではありません。JPEG や PNG を選んでください。`, true);
+    return;
+  }
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    URL.revokeObjectURL(url);
+    state.image = img;
+    rebuild();
+    if (state.srcData) say(`${file.name} を読み込みました（${img.naturalWidth}×${img.naturalHeight}）。`);
+  };
+  img.onerror = () => {
+    URL.revokeObjectURL(url);
+    say("この画像は読み込めませんでした。別のファイルでお試しください。", true);
+  };
+  img.src = url;
+}
+
+ui.file.addEventListener("change", e => {
+  loadFile(e.target.files[0]);
+  e.target.value = "";   // so picking the same file twice still fires change
+});
+
+// Third route in, for when the file dialog is unavailable.
+document.addEventListener("paste", e => {
+  const item = [...(e.clipboardData?.items || [])].find(i => i.type.startsWith("image/"));
+  if (item) loadFile(item.getAsFile());
+});
+
+document.addEventListener("dragover", e => { e.preventDefault(); document.body.classList.add("dragging"); });
+document.addEventListener("dragleave", e => { if (e.relatedTarget === null) document.body.classList.remove("dragging"); });
+document.addEventListener("drop", e => {
+  e.preventDefault();
+  document.body.classList.remove("dragging");
+  const dt = e.dataTransfer;
+  if (!dt) return;
+  let file = dt.files && dt.files[0];
+  if (!file && dt.items) {
+    const item = [...dt.items].find(i => i.kind === "file");
+    if (item) file = item.getAsFile();
+  }
+  if (file) loadFile(file);
+  else say("そのドロップからは画像を取り出せませんでした。「画像を選ぶ」からファイルを指定してください。", true);
+});
+
+ui.items.addEventListener("input", () => {
+  ui.itemsVal.textContent = Number(ui.items.value).toLocaleString("ja-JP");
+});
+ui.items.addEventListener("change", rebuild);
+
+ui.speed.addEventListener("input", () => {
+  ui.speedVal.textContent = `×${Number(ui.speed.value).toFixed(2)}`;
+});
+
+ui.seed.addEventListener("change", rebuild);
+
+// Every metric is tallied at once, so switching is live — no restart needed.
+ui.metric.addEventListener("change", () => {
+  state.metric = ui.metric.value;
+  for (const p of state.panels) {
+    p.eventsEl.textContent = `${p.count[state.metric].toLocaleString("ja-JP")} 回`;
+  }
+});
+
+ui.toggle.addEventListener("click", () => {
+  state.running = !state.running;
+  ui.toggle.textContent = state.running ? "一時停止" : "再開";
+});
+
+ui.restart.addEventListener("click", rebuild);
+
+ui.reseed.addEventListener("click", () => {
+  ui.seed.value = Math.floor(Math.random() * 100000);
+  rebuild();
+});
+
+document.addEventListener("keydown", e => {
+  if (e.target.matches("input")) return;
+  const k = e.key.toLowerCase();
+  if (k === " ") { e.preventDefault(); ui.toggle.click(); }
+  else if (k === "r") rebuild();
+  else if (k === "n") ui.reseed.click();
+  else if (k === "+" || k === "=") {
+    ui.speed.value = Math.min(8, Number(ui.speed.value) + 0.25);
+    ui.speed.dispatchEvent(new Event("input"));
+  } else if (k === "-") {
+    ui.speed.value = Math.max(0.1, Number(ui.speed.value) - 0.25);
+    ui.speed.dispatchEvent(new Event("input"));
+  }
+});
+
+/* ---- go ------------------------------------------------------------ */
+
+buildFrames();
+ui.itemsVal.textContent = Number(ui.items.value).toLocaleString("ja-JP");
+ui.speedVal.textContent = `×${Number(ui.speed.value).toFixed(2)}`;
+state.metric = ui.metric.value;
+state.image = proceduralImage();
+rebuild();
+requestAnimationFrame(tick);
+
+if (window.self !== window.top) {
+  say("プレビュー枠の中で開いています。ファイル選択がブロックされる場合は、HTMLをダウンロードしてブラウザで直接開いてください。", true);
+}
+</script>
+</body>
+</html>
